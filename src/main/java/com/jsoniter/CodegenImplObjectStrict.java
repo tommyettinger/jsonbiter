@@ -5,9 +5,6 @@ import com.jsoniter.spi.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static com.jsoniter.CodegenImplObjectHash.appendVarDef;
-import static com.jsoniter.CodegenImplObjectHash.appendWrappers;
-
 class CodegenImplObjectStrict {
 
     final static Map<String, String> DEFAULT_VALUES = new HashMap<String, String>() {{
@@ -147,7 +144,7 @@ class CodegenImplObjectStrict {
         append(lines, "return obj;");
         return lines.toString()
                 .replace("{{clazz}}", desc.clazz.getCanonicalName())
-                .replace("{{newInst}}", CodegenImplObjectHash.genNewInstCode(desc.clazz, desc.ctor));
+                .replace("{{newInst}}", genNewInstCode(desc.clazz, desc.ctor));
     }
 
     private static void appendSetExtraToKeyValueTypeWrappers(StringBuilder lines, ClassDescriptor desc) {
@@ -364,11 +361,69 @@ class CodegenImplObjectStrict {
         append(lines, "return obj;");
         return lines.toString()
                 .replace("{{clazz}}", clazz.getCanonicalName())
-                .replace("{{newInst}}", CodegenImplObjectHash.genNewInstCode(clazz, ctor));
+                .replace("{{newInst}}", genNewInstCode(clazz, ctor));
     }
 
     static void append(StringBuilder lines, String str) {
         lines.append(str);
         lines.append("\n");
     }
+
+
+    static String genNewInstCode(Class clazz, ConstructorDescriptor ctor) {
+        StringBuilder code = new StringBuilder();
+        if (ctor.parameters.isEmpty()) {
+            // nothing to bind, safe to reuse existing object
+            code.append("(existingObj == null ? ");
+        }
+        if (ctor.objectFactory != null) {
+            code.append("(").append(clazz.getCanonicalName()).append(")com.jsoniter.spi.JsoniterSpi.create(")
+                    .append(clazz.getCanonicalName()).append(".class)");
+        } else {
+            if (ctor.staticMethodName == null) {
+                code.append("new ").append(clazz.getCanonicalName());
+            } else {
+                code.append(clazz.getCanonicalName()).append(".").append(ctor.staticMethodName);
+            }
+        }
+        List<Binding> params = ctor.parameters;
+        if (ctor.objectFactory == null) {
+            appendInvocation(code, params);
+        }
+        if (ctor.parameters.isEmpty()) {
+            // nothing to bind, safe to reuse existing obj
+            code.append(" : (").append(clazz.getCanonicalName()).append(")existingObj)");
+        }
+        return code.toString();
+    }
+
+    static void appendWrappers(List<WrapperDescriptor> wrappers, StringBuilder lines) {
+        for (WrapperDescriptor wrapper : wrappers) {
+            lines.append("obj.");
+            lines.append(wrapper.method.getName());
+            appendInvocation(lines, wrapper.parameters);
+            lines.append(";\n");
+        }
+    }
+
+    static void appendVarDef(StringBuilder lines, Binding parameter) {
+        String typeName = CodegenImplNative.getTypeName(parameter.valueType);
+        lines.append(typeName).append(" _").append(parameter.name).append("_ = ")
+                .append(CodegenImplObjectStrict.DEFAULT_VALUES.get(typeName)).append(";").append('\n');
+    }
+
+    private static void appendInvocation(StringBuilder code, List<Binding> params) {
+        code.append("(");
+        boolean isFirst = true;
+        for (Binding ctorParam : params) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                code.append(",");
+            }
+            code.append("_").append(ctorParam.name).append("_");
+        }
+        code.append(")");
+    }
+
 }

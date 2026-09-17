@@ -14,10 +14,6 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class TestArray extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
-    }
-
     public void test_empty_array() throws IOException {
         JsonIterator iter = JsonIterator.parse("[]");
         assertFalse(iter.readArray());

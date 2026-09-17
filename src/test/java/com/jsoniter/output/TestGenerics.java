@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TestGenerics extends TestCase {
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
 
     private ByteArrayOutputStream baos;
     private JsonStream stream;

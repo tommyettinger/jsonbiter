@@ -14,10 +14,6 @@ import java.util.Map;
 
 public class TestJackson extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     private ObjectMapper objectMapper;
 
     public void setUp() {

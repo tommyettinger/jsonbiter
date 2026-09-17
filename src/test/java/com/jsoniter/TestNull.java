@@ -9,10 +9,6 @@ import java.math.BigInteger;
 
 public class TestNull extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_STRICTLY);
-    }
-
     public static class TestObject1 {
         public Boolean field;
     }

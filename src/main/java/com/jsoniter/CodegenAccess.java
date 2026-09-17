@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-// only uesd by generated code to access decoder
+// only used by generated code to access decoder
 public class CodegenAccess {
 
     public static void addMissingField(List missingFields, long tracker, long mask, String fieldName) {
@@ -180,10 +180,6 @@ public class CodegenAccess {
 
     public static byte readByte(JsonIterator iter) throws IOException {
         return IterImpl.readByte(iter);
-    }
-
-    public static int calcHash(String str) {
-        return CodegenImplObjectHash.calcHash(str);
     }
 
     public static void skipFixedBytes(JsonIterator iter, int n) throws IOException {

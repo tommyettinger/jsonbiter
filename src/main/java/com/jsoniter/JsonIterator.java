@@ -555,12 +555,5 @@ public class JsonIterator implements Closeable {
             return;
         }
         isStreamingEnabled = true;
-        try {
-            DynamicCodegen.enableStreamingSupport();
-        }  catch (JsonException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new JsonException(e);
-        }
     }
 }

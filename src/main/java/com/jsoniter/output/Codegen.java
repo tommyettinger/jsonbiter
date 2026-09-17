@@ -98,12 +98,8 @@ class Codegen {
             CodegenResult source = genSource(cacheKey, classInfo);
             try {
                 generatedSources.put(cacheKey, source);
-                if (isDoingStaticCodegen == null) {
-                    encoder = DynamicCodegen.gen(classInfo.clazz, cacheKey, source);
-                } else {
-                    staticGen(classInfo.clazz, cacheKey, source);
-                }
-                return encoder;
+                staticGen(classInfo.clazz, cacheKey, source);
+                return null;
             } catch (Exception e) {
                 String msg = "failed to generate encoder for: " + type + " with " + Arrays.toString(classInfo.typeArgs) + ", exception: " + e;
                 msg = msg + "\n" + source;

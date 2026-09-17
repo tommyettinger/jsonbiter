@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
 public class NonStreamingTests4Hash {
     @BeforeClass
     public static void setup() {
-        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
+        JsonStream.setMode(EncodingMode.REFLECTION_MODE);
+        JsonIterator.setMode(DecodingMode.REFLECTION_MODE);
     }
 }

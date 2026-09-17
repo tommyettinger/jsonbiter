@@ -13,10 +13,6 @@ import java.util.Map;
 
 public class TestMap extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
-    }
-
     public void test_object_key() throws IOException {
         Map<Object, Object> map = JsonIterator.deserialize("{\"中文\":null}", new TypeLiteral<Map<Object, Object>>() {
         });

@@ -74,12 +74,8 @@ class Codegen {
             }
             try {
                 generatedClassNames.add(cacheKey);
-                if (isDoingStaticCodegen == null) {
-                    decoder = DynamicCodegen.gen(cacheKey, source);
-                } else {
-                    staticGen(cacheKey, source);
-                }
-                return decoder;
+                staticGen(cacheKey, source);
+                return null;
             } catch (Exception e) {
                 String msg = "failed to generate decoder for: " + classInfo + " with " + Arrays.toString(classInfo.typeArgs) + ", exception: " + e;
                 msg = msg + "\n" + source;
@@ -233,42 +229,7 @@ class Codegen {
             return CodegenImplEnum.genEnum(classInfo);
         }
         ClassDescriptor desc = ClassDescriptor.getDecodingClassDescriptor(classInfo, false);
-        if (shouldUseStrictMode(mode, desc)) {
-            return CodegenImplObjectStrict.genObjectUsingStrict(desc);
-        } else {
-            return CodegenImplObjectHash.genObjectUsingHash(desc);
-        }
-    }
-
-    private static boolean shouldUseStrictMode(DecodingMode mode, ClassDescriptor desc) {
-        if (mode == DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_STRICTLY) {
-            return true;
-        }
-        List<Binding> allBindings = desc.allDecoderBindings();
-        for (Binding binding : allBindings) {
-            if (binding.asMissingWhenNotPresent || binding.asExtraWhenPresent || binding.shouldSkip) {
-                // only slice support mandatory tracking
-                return true;
-            }
-        }
-        if (desc.asExtraForUnknownProperties) {
-            // only slice support unknown field tracking
-            return true;
-        }
-        if (!desc.keyValueTypeWrappers.isEmpty()) {
-            return true;
-        }
-        boolean hasBinding = false;
-        for (Binding allBinding : allBindings) {
-            if (allBinding.fromNames.length > 0) {
-                hasBinding = true;
-            }
-        }
-        if (!hasBinding) {
-            // empty object can only be handled by strict mode
-            return true;
-        }
-        return false;
+        return CodegenImplObjectStrict.genObjectUsingStrict(desc);
     }
 
     public static void staticGenDecoders(TypeLiteral[] typeLiterals, CodegenAccess.StaticCodegenTarget staticCodegenTarget) {

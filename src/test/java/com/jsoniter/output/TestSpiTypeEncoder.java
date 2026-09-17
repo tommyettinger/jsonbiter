@@ -12,10 +12,6 @@ import java.util.List;
 
 public class TestSpiTypeEncoder extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     public static class MyDate {
         Date date;
     }

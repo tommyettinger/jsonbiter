@@ -11,11 +11,6 @@ import java.util.Date;
 
 public class TestCustomizeType extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_STRICTLY);
-//        JsonIterator.setMode(DecodingMode.REFLECTION_MODE);
-    }
-
     public static class MyDate2 {
         Date date;
     }

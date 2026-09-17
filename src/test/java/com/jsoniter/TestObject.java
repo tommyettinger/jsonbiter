@@ -16,10 +16,6 @@ import java.util.Map;
 
 public class TestObject extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_STRICTLY);
-    }
-
     public static class EmptyClass {
     }
 
@@ -60,7 +56,6 @@ public class TestObject extends TestCase {
     }
 
     public void test_two_fields() throws IOException {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
         JsonIterator iter = JsonIterator.parse("{ 'field1' : 'hello' , 'field2': 'world' }".replace('\'', '"'));
         assertEquals("field1", iter.readObject());
         assertEquals("hello", iter.readString());
@@ -171,7 +166,6 @@ public class TestObject extends TestCase {
     }
 
     public void test_enum() throws IOException {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
         TestObject5 obj = JsonIterator.deserialize("{\"field1\":\"HELLO\"}", TestObject5.class);
         assertEquals(TestObject5.MyEnum.HELLO, obj.field1);
         try {

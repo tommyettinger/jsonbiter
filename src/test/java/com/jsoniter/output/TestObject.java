@@ -14,10 +14,6 @@ import java.util.*;
 
 public class TestObject extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     private ByteArrayOutputStream baos;
     private JsonStream stream;
 
@@ -89,7 +85,7 @@ public class TestObject extends TestCase {
         stream.close();
         assertEquals("{'field1':'HELLO'}".replace('\'', '"'), baos.toString());
         Config cfg = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .indentionStep(2)
                 .build();
         assertEquals("{\n" +
@@ -141,7 +137,7 @@ public class TestObject extends TestCase {
         TestObject8 obj = new TestObject8();
         obj.field1 = new String[]{"hello"};
         Config config = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{\"field1\":[\"hello\"]}",
                 JsonStream.serialize(config, obj));
@@ -169,7 +165,7 @@ public class TestObject extends TestCase {
         assertEquals("{\"field1\":[\"hello\"]}", JsonStream.serialize(obj));
 
         Config config = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         obj = new TestObject9();
         obj.field1 = new String[]{null};
@@ -282,7 +278,7 @@ public class TestObject extends TestCase {
     public void test_indention() {
         Config dynamicCfg = new Config.Builder()
                 .indentionStep(2)
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         TestObject14 obj = new TestObject14();
         obj.field1 = "1";
@@ -320,7 +316,7 @@ public class TestObject extends TestCase {
         assertEquals("{}", JsonStream.serialize(config, new TestObject15()));
         config = JsoniterSpi.getCurrentConfig().copyBuilder()
                 .indentionStep(2)
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(config, new TestObject15()));
     }
@@ -333,7 +329,7 @@ public class TestObject extends TestCase {
     public void test_missing_notFirst() {
         Config cfg = JsoniterSpi.getCurrentConfig().copyBuilder()
             .indentionStep(2)
-            .encodingMode(EncodingMode.DYNAMIC_MODE)
+            .encodingMode(EncodingMode.REFLECTION_MODE)
             .build();
         assertEquals("{\n" +
                 "  \"i\": null\n" +
@@ -358,7 +354,7 @@ public class TestObject extends TestCase {
         assertEquals("{\"l\":1,\"d\":1}", JsonStream.serialize(cfg, new TestObject17()));
         cfg = new Config.Builder()
                 .omitDefaultValue(true)
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{\"l\":1,\"d\":1}", JsonStream.serialize(cfg, new TestObject17()));
     }
@@ -405,7 +401,7 @@ public class TestObject extends TestCase {
         assertEquals("{}", JsonStream.serialize(cfg, new TestObject18()));
         cfg = new Config.Builder()
                 .omitDefaultValue(true)
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(cfg, new TestObject18()));
     }

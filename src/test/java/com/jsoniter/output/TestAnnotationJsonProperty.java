@@ -8,10 +8,6 @@ import java.io.IOException;
 
 public class TestAnnotationJsonProperty extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     public static class TestObject1 {
         @JsonProperty(to = {"field-1"})
         public String field1;

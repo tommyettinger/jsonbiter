@@ -11,10 +11,6 @@ import java.io.IOException;
 
 public class TestJackson extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
-    }
-
     private ObjectMapper objectMapper;
 
     public void setUp() {

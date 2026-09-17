@@ -2,10 +2,6 @@ package com.jsoniter.output;
 
 public enum EncodingMode {
     /**
-     * dynamically codegen
-     */
-    DYNAMIC_MODE,
-    /**
      * statically codegen
      */
     STATIC_MODE,

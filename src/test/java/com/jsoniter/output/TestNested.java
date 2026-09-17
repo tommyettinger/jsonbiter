@@ -14,10 +14,6 @@ import java.util.Map;
 
 public class TestNested extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     private ByteArrayOutputStream baos;
     private JsonStream stream;
 

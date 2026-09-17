@@ -10,10 +10,6 @@ import java.util.*;
 
 public class TestArray extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     private ByteArrayOutputStream baos;
     private JsonStream stream;
 
@@ -128,7 +124,7 @@ public class TestArray extends TestCase {
                 "  2\n" +
                 "]", JsonStream.serialize(cfg, new int[]{1, 2}));
         cfg = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .indentionStep(2)
                 .build();
         assertEquals("[\n" +
@@ -144,7 +140,7 @@ public class TestArray extends TestCase {
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new int[]{}));
         cfg = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .indentionStep(2)
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new int[]{}));

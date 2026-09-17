@@ -13,10 +13,6 @@ import java.math.BigInteger;
 
 public class TestInteger extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_STRICTLY);
-    }
-
     private boolean isStreaming;
 
     public void test_char() throws IOException {

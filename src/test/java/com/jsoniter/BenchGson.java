@@ -31,10 +31,10 @@ public class BenchGson {
                 .create();
         gsonCompatibilityMode = new GsonCompatibilityMode.Builder().setDateFormat("EEE MMM dd HH:mm:ss Z yyyy").build();
         JsoniterSpi.setCurrentConfig(gsonCompatibilityMode);
-        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
+        JsonIterator.setMode(DecodingMode.REFLECTION_MODE);
         if (params != null) {
             if (params.getBenchmark().contains("jsoniterDynamicCodegenDecoder")) {
-                JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
+                JsonIterator.setMode(DecodingMode.REFLECTION_MODE);
             }
         }
     }

@@ -10,10 +10,6 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class TestGenerics extends TestCase {
 
-    static {
-//        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_STRICTLY);
-    }
-
     public void test_int_list() throws IOException {
         JsonIterator iter = JsonIterator.parse("[1,2,3]");
         List<Integer> val = iter.read(new TypeLiteral<ArrayList<Integer>>() {

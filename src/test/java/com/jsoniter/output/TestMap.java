@@ -14,10 +14,6 @@ import java.util.Map;
 
 public class TestMap extends TestCase {
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
-
     private ByteArrayOutputStream baos;
     private JsonStream stream;
 
@@ -104,7 +100,7 @@ public class TestMap extends TestCase {
         map.put("field2", "2");
         Config dynamicCfg = new Config.Builder()
                 .indentionStep(2)
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         String output = JsonStream.serialize(dynamicCfg, map);
         assertEquals("{\n" +
@@ -130,7 +126,7 @@ public class TestMap extends TestCase {
         assertEquals("{}", JsonStream.serialize(config, new HashMap<String, String>()));
         config = JsoniterSpi.getCurrentConfig().copyBuilder()
                 .indentionStep(2)
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(config, new HashMap<String, String>()));
     }

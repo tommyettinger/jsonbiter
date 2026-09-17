@@ -18,7 +18,7 @@ public class TestList extends TestCase {
                 "  2\n" +
                 "]", JsonStream.serialize(cfg, Arrays.asList(1, 2)));
         cfg = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .indentionStep(2)
                 .build();
         assertEquals("[\n" +
@@ -34,7 +34,7 @@ public class TestList extends TestCase {
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new ArrayList<Integer>()));
         cfg = new Config.Builder()
-                .encodingMode(EncodingMode.DYNAMIC_MODE)
+                .encodingMode(EncodingMode.REFLECTION_MODE)
                 .indentionStep(2)
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new ArrayList<Integer>()));

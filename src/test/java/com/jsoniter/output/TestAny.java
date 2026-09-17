@@ -15,9 +15,6 @@ public class TestAny extends TestCase {
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
-    static {
-//        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
-    }
 
     public void test_int() {
         Any any = Any.wrap(100);

@@ -30,8 +30,8 @@ public class StaticCodegen {
         }
         Class<?> clazz = Class.forName(configClassName);
         StaticCodegenConfig config = (StaticCodegenConfig) clazz.newInstance();
-        JsonIterator.setMode(DecodingMode.DYNAMIC_MODE_AND_MATCH_FIELD_WITH_HASH);
-        JsonStream.setMode(EncodingMode.DYNAMIC_MODE);
+        JsonIterator.setMode(DecodingMode.REFLECTION_MODE);
+        JsonStream.setMode(EncodingMode.REFLECTION_MODE);
         config.setup();
         CodegenAccess.staticGenDecoders(
                 config.whatToCodegen(), new CodegenAccess.StaticCodegenTarget(outputDir));

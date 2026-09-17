@@ -2,18 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jsoniter</groupId>
+    <groupId>com.github.tommyettinger</groupId>
     <version>0.9.24-SNAPSHOT</version>
-    <artifactId>jsoniter</artifactId>
-    <name>json iterator</name>
-    <description>jsoniter (json-iterator) is fast and flexible JSON parser available in Java and Go</description>
-    <url>http://jsoniter.com</url>
+    <artifactId>jsonbiter</artifactId>
+    <name>JSON Iterator Biter</name>
+    <description>jsonbiter is an iterative (and not) JSON parser available for the JVM</description>
+    <url>https://github.com/tommyettinger/jsonbiter</url>
     <packaging>jar</packaging>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
 
@@ -22,25 +22,38 @@
             <name>Tao Wen</name>
             <email>taowen@gmail.com</email>
             <organization>jsoniter</organization>
-            <organizationUrl>http://jsoniter.com</organizationUrl>
+            <organizationUrl>https://jsoniter.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Tommy Ettinger</name>
+            <email>tommy.ettinger@gmail.com</email>
+            <organization>None</organization>
+            <url>https://github.com/tommyettinger</url>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/json-iterator/java.git</connection>
-        <developerConnection>scm:git:ssh://github.com:json-iterator/java.git</developerConnection>
-        <url>http://github.com/json-iterator/java/tree/master</url>
+        <connection>scm:git:git://github.com/tommyettinger/jsonbiter.git</connection>
+        <developerConnection>scm:git:ssh://github.com:tommyettinger/jsonbiter.git</developerConnection>
+        <url>https://github.com/tommyettinger/jsonbiter/tree/main</url>
     </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.javadoc.version>3.0.1</maven.javadoc.version>
+        <maven.resources.version>3.1.0</maven.resources.version>
+        <maven.source.version>3.0.1</maven.source.version>
+        <maven.gpg.version>1.6</maven.gpg.version>
+        <jdk.version>1.8</jdk.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -58,13 +71,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.5</version>
+            <version>2.22.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.3</version>
+            <version>2.8.9</version>
             <optional>true</optional>
         </dependency>
 
@@ -121,8 +134,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -142,23 +155,37 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <debug>false</debug>
+                    <minmemory>256m</minmemory>
+                    <maxmemory>1024m</maxmemory>
+                    <quiet>true</quiet>
+                    <doctitle>${project.name} ${project.version}</doctitle>
+                    <windowtitle>${project.name} ${project.version}</windowtitle>
+                    <splitindex>true</splitindex>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <javadocVersion>${jdk.version}</javadocVersion>
+                    <links>
+                        <link>https://docs.oracle.com/javase/8/docs/api/</link>
+                    </links>
+                    <linksource>true</linksource>
+                    <detectOfflineLinks>false</detectOfflineLinks>
+                    <doclint>none</doclint>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>${maven.gpg.version}</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -168,28 +195,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <goals>deploy</goals>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -213,9 +218,5 @@
     </build>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
 </project>

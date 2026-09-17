@@ -44,8 +44,6 @@ import org.junit.runners.Suite;
         TestNative.class,
         TestBoolean.class, TestFloat.class, com.jsoniter.output.TestFloat.class,
         TestList.class, TestInteger.class, com.jsoniter.output.TestInteger.class,
-        com.jsoniter.output.TestJackson.class,
-        com.jsoniter.TestJackson.class,
         TestSpiTypeEncoder.class,
         TestSpiTypeDecoder.class,
         TestSpiPropertyDecoder.class,

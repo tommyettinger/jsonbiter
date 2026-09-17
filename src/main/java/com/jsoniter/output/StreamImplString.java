@@ -169,19 +169,17 @@ class StreamImplString {
                     }
                     _surrogate = c;
                     // and if so, followed by another from next range
-                    if (i >= valLen) { // unless we hit the end?
+                    if (++i >= valLen) { // unless we hit the end?
                         break;
                     }
                     int firstPart = _surrogate;
-                    _surrogate = 0;
                     // Ok, then, is the second part valid?
-                    if (c < SURR2_FIRST || c > SURR2_LAST) {
-                        throw new JsonException("Broken surrogate pair: first char 0x" + Integer.toHexString(firstPart) + ", second 0x" + Integer.toHexString(c) + "; illegal combination");
+                    // Credit to t-mangoe's PR here: https://github.com/json-iterator/java/pull/232
+                    int secondPart = val.charAt(i);
+                    if (secondPart < SURR2_FIRST || secondPart > SURR2_LAST) {
+                        throw new JsonException("Broken surrogate pair: first char 0x" + Integer.toHexString(firstPart) + ", second 0x" + Integer.toHexString(secondPart) + "; illegal combination");
                     }
-                    c = 0x10000 + ((firstPart - SURR1_FIRST) << 10) + (c - SURR2_FIRST);
-                    if (c > 0x10FFFF) { // illegal in JSON as well as in XML
-                        throw new JsonException("illegalSurrogate");
-                    }
+                    c = 0x10000 + ((firstPart - SURR1_FIRST) << 10) + (secondPart - SURR2_FIRST);
                     stream.write(
                             (byte) (0xf0 | (c >> 18)),
                             (byte) (0x80 | ((c >> 12) & 0x3f)),

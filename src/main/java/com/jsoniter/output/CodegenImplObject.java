@@ -68,7 +68,6 @@ class CodegenImplObject {
         boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
         String fieldCacheKey = binding.encoderCacheKey();
         Encoder encoder = JsoniterSpi.getEncoder(fieldCacheKey);
-        boolean isCollectionValueNullable = binding.isCollectionValueNullable;
         Class valueClazz;
         String valueAccessor;
         if (binding.field != null) {
@@ -78,14 +77,8 @@ class CodegenImplObject {
             valueClazz = binding.method.getReturnType();
             valueAccessor = "obj." + binding.method.getName() + "()";
         }
-        if (!supportCollectionValueNullable(valueClazz)) {
-            isCollectionValueNullable = true;
-        }
         boolean nullable = !valueClazz.isPrimitive();
         boolean omitZero = JsoniterSpi.getCurrentConfig().omitDefaultValue();
-        if (!binding.isNullable) {
-            nullable = false;
-        }
         if (binding.defaultValueToOmit != null) {
             if (notFirst == 0) { // no previous field
                 notFirst = 2; // maybe
@@ -114,7 +107,7 @@ class CodegenImplObject {
             }
         }
         if (encoder == null) {
-            CodegenImplNative.genWriteOp(ctx, valueAccessor, binding.valueType, nullable, isCollectionValueNullable);
+            CodegenImplNative.genWriteOp(ctx, valueAccessor, binding.valueType, nullable, true);
         } else {
             ctx.append(String.format("com.jsoniter.output.CodegenAccess.writeVal(\"%s\", %s, stream);",
                     fieldCacheKey, valueAccessor));

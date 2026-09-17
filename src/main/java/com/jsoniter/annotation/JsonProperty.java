@@ -48,18 +48,6 @@ public @interface JsonProperty {
     Class<? extends Encoder> encoder() default Encoder.class;
 
     /**
-     * @return used in encoding only, should check null for this field,
-     * skip null checking will make encoding faster
-     */
-    boolean nullable() default true;
-
-    /**
-     * @return used in encoding only, should check null for the value, if it is collection,
-     * skip null checking will make encoding faster
-     */
-    boolean collectionValueNullable() default true;
-
-    /**
      * @return the default value to omit
      * null, to omit null value
      * \"xxx\", to omit string value

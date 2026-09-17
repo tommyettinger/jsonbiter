@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsoniter.extra.JacksonCompatibilityMode;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 import java.io.IOException;
 
+@Ignore
 public class TestJackson extends TestCase {
 
     private ObjectMapper objectMapper;

@@ -23,8 +23,6 @@ public class Binding {
     public Encoder encoder;
     public boolean asMissingWhenNotPresent;
     public boolean asExtraWhenPresent;
-    public boolean isNullable = true;
-    public boolean isCollectionValueNullable = true;
     public OmitValue defaultValueToOmit;
     // then this property will not be unknown
     // but we do not want to bind it anywhere

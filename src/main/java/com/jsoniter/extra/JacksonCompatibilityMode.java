@@ -108,16 +108,6 @@ public class JacksonCompatibilityMode extends Config {
             }
 
             @Override
-            public boolean nullable() {
-                return true;
-            }
-
-            @Override
-            public boolean collectionValueNullable() {
-                return true;
-            }
-
-            @Override
             public String defaultValueToOmit() {
                 return "";
             }

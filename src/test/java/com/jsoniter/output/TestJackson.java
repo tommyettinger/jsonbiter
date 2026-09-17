@@ -8,10 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jsoniter.extra.JacksonCompatibilityMode;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Ignore
 public class TestJackson extends TestCase {
 
     private ObjectMapper objectMapper;

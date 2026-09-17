@@ -457,8 +457,6 @@ public class Config extends EmptyExtension {
 
     private void updateBindingWithJsonProperty(Binding binding, JsonProperty jsonProperty) {
         binding.asMissingWhenNotPresent = jsonProperty.required();
-        binding.isNullable = jsonProperty.nullable();
-        binding.isCollectionValueNullable = jsonProperty.collectionValueNullable();
         String defaultValueToOmit = jsonProperty.defaultValueToOmit();
         if (!defaultValueToOmit.isEmpty()) {
             binding.defaultValueToOmit = OmitValue.Parsed.parse(binding.valueType, defaultValueToOmit);

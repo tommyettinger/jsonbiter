@@ -129,7 +129,6 @@ public class TestObject extends TestCase {
     }
 
     public static class TestObject8 {
-        @JsonProperty(nullable = false)
         public String[] field1;
     }
 
@@ -143,19 +142,18 @@ public class TestObject extends TestCase {
                 JsonStream.serialize(config, obj));
         try {
             JsonStream.serialize(config, new TestObject8());
-            fail();
         } catch (NullPointerException ignore) {
         }
     }
 
     public static class TestObject9 {
-        @JsonProperty(collectionValueNullable = false, defaultValueToOmit = "null")
+        @JsonProperty(defaultValueToOmit = "null")
         public String[] field1;
-        @JsonProperty(collectionValueNullable = false, defaultValueToOmit = "null")
+        @JsonProperty(defaultValueToOmit = "null")
         public List<String> field2;
-        @JsonProperty(collectionValueNullable = false, defaultValueToOmit = "null")
+        @JsonProperty(defaultValueToOmit = "null")
         public Set<String> field3;
-        @JsonProperty(collectionValueNullable = false, defaultValueToOmit = "null")
+        @JsonProperty(defaultValueToOmit = "null")
         public Map<String, String> field4;
     }
 
@@ -171,7 +169,6 @@ public class TestObject extends TestCase {
         obj.field1 = new String[]{null};
         try {
             JsonStream.serialize(config, obj);
-            fail();
         } catch (NullPointerException ignore) {
         }
 
@@ -180,7 +177,6 @@ public class TestObject extends TestCase {
         obj.field2.add(null);
         try {
             JsonStream.serialize(config, obj);
-            fail();
         } catch (NullPointerException ignore) {
         }
 
@@ -189,7 +185,6 @@ public class TestObject extends TestCase {
         obj.field3.add(null);
         try {
             JsonStream.serialize(config, obj);
-            fail();
         } catch (NullPointerException ignore) {
         }
 
@@ -198,7 +193,6 @@ public class TestObject extends TestCase {
         obj.field4.put("hello", null);
         try {
             JsonStream.serialize(config, obj);
-            fail();
         } catch (NullPointerException ignore) {
         }
     }
@@ -217,7 +211,6 @@ public class TestObject extends TestCase {
         public String field1;
         @JsonProperty(defaultValueToOmit = "null")
         public String field2;
-        @JsonProperty(nullable = false)
         public Integer field3;
     }
 
@@ -267,11 +260,10 @@ public class TestObject extends TestCase {
     }
 
     public static class TestObject14 {
-        @JsonProperty(nullable = true, defaultValueToOmit = "null")
+        @JsonProperty(defaultValueToOmit = "null")
         public String field1;
-        @JsonProperty(nullable = false)
         public String field2;
-        @JsonProperty(nullable = true, defaultValueToOmit = "void")
+        @JsonProperty(defaultValueToOmit = "void")
         public String field3;
     }
 

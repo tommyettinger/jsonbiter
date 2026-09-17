@@ -3,7 +3,6 @@ package com.jsoniter.suite;
 import com.jsoniter.*;
 import com.jsoniter.TestFloat;
 import com.jsoniter.TestGenerics;
-import com.jsoniter.TestGson;
 import com.jsoniter.TestNested;
 import com.jsoniter.TestObject;
 import com.jsoniter.TestString;
@@ -50,8 +49,6 @@ import org.junit.runners.Suite;
         TestSpiTypeEncoder.class,
         TestSpiTypeDecoder.class,
         TestSpiPropertyDecoder.class,
-        TestGson.class,
-        com.jsoniter.output.TestGson.class,
         TestStreamBuffer.class,
         IterImplForStreamingTest.class,
         TestCollection.class,

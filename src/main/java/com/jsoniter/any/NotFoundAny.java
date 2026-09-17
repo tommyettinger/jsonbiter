@@ -13,7 +13,8 @@ class NotFoundAny extends Any {
 
     private Object[] keys;
     private int idx;
-    private Object obj, key;
+    private final Object obj;
+    private Object key;
     private final int exceptionMode;
 
     public NotFoundAny(Object[] keys, int idx, Object obj) {
@@ -46,17 +47,14 @@ class NotFoundAny extends Any {
         return null;
     }
 
-    void throwException() {
+    protected void throwException() {
         switch (exceptionMode) {
             case 0:
-                throw new JsonException(String.format("Value not found: failed to get path %s, because #%s section of the path ( %s ) not found in %s",
-                        Arrays.toString(keys), idx, keys[idx], obj));
+                throw new JsonException("Value not found: failed to get path " + Arrays.toString(keys) + ", because #" + idx + " section of the path ( " + keys[idx] + " ) not found in " + obj);
             case 1:
-                throw new JsonException(String.format("Value not found: failed to get index %s from %s",
-                        idx, obj));
+                throw new JsonException("Value not found: failed to get index " + idx + " from " + obj);
             case 2:
-                throw new JsonException(String.format("Value not found: failed to get key %s from %s",
-                        key, obj));
+                throw new JsonException("Value not found: failed to get key " + key + " from " + obj);
         }
         throw new JsonException();
     }

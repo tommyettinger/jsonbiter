@@ -6,7 +6,9 @@ public interface OmitValue {
 
     boolean shouldOmit(Object val);
 
-    String code();
+    String prefix();
+    
+    String suffix();
 
     class Null implements OmitValue {
 
@@ -16,8 +18,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "null == %s";
+        public String prefix() {
+            return "null == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -29,8 +36,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -42,8 +54,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -55,8 +72,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -68,8 +90,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -81,8 +108,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -94,8 +126,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -107,8 +144,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "0 == %s";
+        public String prefix() {
+            return "0 == ";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
@@ -120,19 +162,25 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return "false == %s";
+        public String prefix() {
+            return "!";
+        }
+
+        @Override
+        public String suffix() {
+            return "";
         }
     }
 
     class Parsed implements OmitValue {
 
         private final Object defaultValue;
-        private final String code;
+        private final String prefix, suffix;
 
-        public Parsed(Object defaultValue, String code) {
+        public Parsed(Object defaultValue, String prefix, String suffix) {
             this.defaultValue = defaultValue;
-            this.code = code;
+            this.prefix = prefix;
+            this.suffix = suffix;
         }
 
         public static OmitValue parse(Type valueType, String defaultValueToOmit) {
@@ -142,52 +190,52 @@ public interface OmitValue {
                 return new OmitValue.Null();
             } else if (boolean.class.equals(valueType)) {
                 Boolean defaultValue = Boolean.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", "");
             } else if (Boolean.class.equals(valueType)) {
                 Boolean defaultValue = Boolean.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s.booleanValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", ".booleanValue()");
             } else if (int.class.equals(valueType)) {
                 Integer defaultValue = Integer.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", "");
             } else if (Integer.class.equals(valueType)) {
                 Integer defaultValue = Integer.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s.intValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", ".intValue()");
             } else if (byte.class.equals(valueType)) {
                 Byte defaultValue = Byte.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", "");
             } else if (Byte.class.equals(valueType)) {
                 Byte defaultValue = Byte.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s.byteValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", ".byteValue()");
             } else if (short.class.equals(valueType)) {
                 Short defaultValue = Short.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", "");
             } else if (Short.class.equals(valueType)) {
                 Short defaultValue = Short.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == %s.shortValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + " == ", ".shortValue()");
             } else if (long.class.equals(valueType)) {
                 Long defaultValue = Long.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "L == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "L == ", "");
             } else if (Long.class.equals(valueType)) {
                 Long defaultValue = Long.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "L == %s.longValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "L == ", ".longValue()");
             } else if (float.class.equals(valueType)) {
                 Float defaultValue = Float.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "F == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "F == ", "");
             } else if (Float.class.equals(valueType)) {
                 Float defaultValue = Float.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "F == %s.floatValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "F == ", ".floatValue()");
             } else if (double.class.equals(valueType)) {
                 Double defaultValue = Double.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "D == %s");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "D == ", "");
             } else if (Double.class.equals(valueType)) {
                 Double defaultValue = Double.valueOf(defaultValueToOmit);
-                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "D == %s.doubleValue()");
+                return new OmitValue.Parsed(defaultValue, defaultValueToOmit + "D == ", ".doubleValue()");
             } else if (char.class.equals(valueType) && defaultValueToOmit.length() == 1) {
                 Character defaultValue = defaultValueToOmit.charAt(0);
-                return new OmitValue.Parsed(defaultValue, "'" + defaultValueToOmit + "' == %s");
+                return new OmitValue.Parsed(defaultValue, "'" + defaultValueToOmit + "' == ", "");
             } else if (Character.class.equals(valueType) && defaultValueToOmit.length() == 1) {
                 Character defaultValue = defaultValueToOmit.charAt(0);
-                return new OmitValue.Parsed(defaultValue, "'" + defaultValueToOmit + "' == %s.charValue()");
+                return new OmitValue.Parsed(defaultValue, "'" + defaultValueToOmit + "' == ", ".charValue()");
             } else {
                 throw new UnsupportedOperationException("failed to parse defaultValueToOmit: " + defaultValueToOmit);
             }
@@ -199,8 +247,13 @@ public interface OmitValue {
         }
 
         @Override
-        public String code() {
-            return code;
+        public String prefix() {
+            return prefix;
+        }
+
+        @Override
+        public String suffix() {
+            return suffix;
         }
     }
 }

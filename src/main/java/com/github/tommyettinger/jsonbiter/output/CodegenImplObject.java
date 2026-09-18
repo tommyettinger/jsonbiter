@@ -85,7 +85,7 @@ class CodegenImplObject {
                 ctx.append("boolean notFirst = false;");
             }
 
-            ctx.append("if (!(" + String.format(binding.defaultValueToOmit.code(), valueAccessor)+ ")) {");
+            ctx.append("if (!(" + binding.defaultValueToOmit.prefix() + valueAccessor + binding.defaultValueToOmit.suffix() + ")) {");
             notFirst = appendComma(ctx, notFirst);
             if (noIndention) {
                 ctx.append(CodegenResult.bufferToWriteOp("\"" + toName + "\":"));

@@ -77,11 +77,11 @@ class CodegenImplMap {
             ctx.append("stream.writeVal((java.lang.String)entry.getKey());");
         } else if (CodegenImplNative.NATIVE_ENCODERS.containsKey(keyType)) {
             ctx.append("stream.write('\"');");
-            ctx.append(String.format("stream.writeVal((%s)entry.getKey());", CodegenImplNative.getTypeName(keyType)));
+            ctx.append("stream.writeVal((" + CodegenImplNative.getTypeName(keyType) + ")entry.getKey());");
             ctx.append("stream.write('\"');");
         } else {
             String mapCacheKey = JsoniterSpi.getMapKeyEncoderCacheKey(keyType);
-            ctx.append(String.format("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeMapKey(\"%s\", entry.getKey(), stream);", mapCacheKey));
+            ctx.append("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeMapKey(\"" + mapCacheKey + "\", entry.getKey(), stream);");
         }
         if (noIndention) {
             ctx.append("stream.write(':');");

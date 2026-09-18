@@ -129,15 +129,15 @@ class CodegenImplObjectStrict {
             appendSetExtraToKeyValueTypeWrappers(lines, desc);
         }
         if (!desc.ctor.parameters.isEmpty()) {
-            append(lines, String.format("%s obj = {{newInst}};", CodegenImplNative.getTypeName(desc.clazz)));
+            append(lines, CodegenImplNative.getTypeName(desc.clazz) + " obj = {{newInst}};");
             for (Binding field : desc.fields) {
                 if (field.fromNames.length == 0) {
                     continue;
                 }
-                append(lines, String.format("obj.%s = _%s_;", field.field.getName(), field.name));
+                append(lines, "obj." + field.field.getName() + " = _" + field.name + "_;");
             }
             for (Binding setter : desc.setters) {
-                append(lines, String.format("obj.%s(_%s_);", setter.method.getName(), setter.name));
+                append(lines, "obj." + setter.method.getName() + "(_" + setter.name + "_);");
             }
         }
         appendWrappers(desc.bindingTypeWrappers, lines);
@@ -154,7 +154,7 @@ class CodegenImplObjectStrict {
             append(lines, "java.util.Map.Entry entry = (java.util.Map.Entry)extraIter.next();");
             append(lines, "String key = entry.getKey().toString();");
             append(lines, "any.com.github.tommyettinger.jsonbiter.Any value = (any.com.github.tommyettinger.jsonbiter.Any)entry.getValue();");
-            append(lines, String.format("obj.%s(key, value.object());", wrapper.getName()));
+            append(lines, "obj." + wrapper.getName() + "(key, value.object());");
         }
         append(lines, "}");
     }
@@ -163,9 +163,9 @@ class CodegenImplObjectStrict {
         Binding onExtraProperties = desc.onExtraProperties;
         if (GenericsHelper.isSameClass(onExtraProperties.valueType, Map.class)) {
             if (onExtraProperties.field != null) {
-                append(lines, String.format("obj.%s = extra;", onExtraProperties.field.getName()));
+                append(lines, "obj." + onExtraProperties.field.getName() + " = extra;");
             } else {
-                append(lines, String.format("obj.%s(extra);", onExtraProperties.method.getName()));
+                append(lines, "obj." + onExtraProperties.method.getName() + "(extra);");
             }
             return;
         }
@@ -219,17 +219,14 @@ class CodegenImplObjectStrict {
             if (binding.field != null) {
                 if (binding.valueCanReuse) {
                     // reuse; then field set
-                    rendered = String.format("%scom.jsoniter.CodegenAccess.setExistingObject(iter, obj.%s);obj.%s=%s%s",
-                            rendered.substring(0, start), binding.field.getName(), binding.field.getName(), op, rendered.substring(end));
+                    rendered = rendered.substring(0, start) + "com.jsoniter.CodegenAccess.setExistingObject(iter, obj." + binding.field.getName() + ");obj." + binding.field.getName() + "=" + op + rendered.substring(end);
                 } else {
                     // just field set
-                    rendered = String.format("%sobj.%s=%s%s",
-                            rendered.substring(0, start), binding.field.getName(), op, rendered.substring(end));
+                    rendered = rendered.substring(0, start) + "obj." + binding.field.getName() + "=" + op + rendered.substring(end);
                 }
             } else {
                 // method set
-                rendered = String.format("%sobj.%s(%s)%s",
-                        rendered.substring(0, start), binding.method.getName(), op, rendered.substring(end));
+                rendered = rendered.substring(0, start) + "obj." + binding.method.getName() + "(" + op + ")" + rendered.substring(end);
             }
         }
     }
@@ -239,17 +236,16 @@ class CodegenImplObjectStrict {
         for (Binding binding : desc.allDecoderBindings()) {
             if (binding.asMissingWhenNotPresent) {
                 long mask = binding.mask;
-                append(lines, String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.addMissingField(missingFields, tracker, %sL, \"%s\");",
-                        mask, binding.name));
+                append(lines, "com.github.tommyettinger.jsonbiter.CodegenAccess.addMissingField(missingFields, tracker, " + mask + "L, \"" + binding.name + "\");");
             }
         }
         if (desc.onMissingProperties == null || !desc.ctor.parameters.isEmpty()) {
             append(lines, "throw new spi.com.github.tommyettinger.jsonbiter.JsonException(\"missing required properties: \" + missingFields);");
         } else {
             if (desc.onMissingProperties.field != null) {
-                append(lines, String.format("obj.%s = missingFields;", desc.onMissingProperties.field.getName()));
+                append(lines, "obj." + desc.onMissingProperties.field.getName() + " = missingFields;");
             } else {
-                append(lines, String.format("obj.%s(missingFields);", desc.onMissingProperties.method.getName()));
+                append(lines, "obj." + desc.onMissingProperties.method.getName() + "(missingFields);");
             }
         }
     }
@@ -312,20 +308,19 @@ class CodegenImplObjectStrict {
                 append(lines, "if (");
                 for (int j = 0; j < bytesToCompare.size(); j++) {
                     Byte a = bytesToCompare.get(j);
-                    append(lines, String.format("field.at(%d)==%s && ", i - bytesToCompare.size() + j, a));
+                    append(lines, "field.at("+(i - bytesToCompare.size() + j)+")=="+a+" && ");
                 }
-                append(lines, String.format("field.at(%d)==%s", i, b));
+                append(lines, "field.at("+i+")=="+b);
                 append(lines, ") {");
                 Binding field = (Binding) entry.getValue();
                 if (field.asExtraWhenPresent) {
-                    append(lines, String.format(
-                            "throw new spi.com.github.tommyettinger.jsonbiter.JsonException('extra property: %s');".replace('\'', '"'),
-                            field.name));
+                    append(lines, "throw new spi.com.github.tommyettinger.jsonbiter.JsonException(\"extra property: "
+                            +field.name+"\");");
                 } else if (field.shouldSkip) {
                     append(lines, "iter.skip();");
                     append(lines, "continue;");
                 } else {
-                    append(lines, String.format("_%s_ = %s;", field.name, CodegenImplNative.genField(field)));
+                    append(lines, "_" + field.name + "_ = " + CodegenImplNative.genField(field) + ";");
                     if (field.asMissingWhenNotPresent) {
                         append(lines, "tracker = tracker | " + field.mask + "L;");
                     }
@@ -344,9 +339,9 @@ class CodegenImplObjectStrict {
             append(lines, "if (");
             for (int j = 0; j < bytesToCompare.size(); j++) {
                 Byte a = bytesToCompare.get(j);
-                append(lines, String.format("field.at(%d)==%s && ", i - bytesToCompare.size() + j, a));
+                append(lines, "field.at("+(i - bytesToCompare.size() + j)+")=="+a+" && ");
             }
-            append(lines, String.format("field.at(%d)==%s", i, b));
+            append(lines, "field.at("+i+")=="+b);
             append(lines, ") {");
             addFieldDispatch(lines, len, i + 1, next, new ArrayList<Byte>());
             append(lines, "}");

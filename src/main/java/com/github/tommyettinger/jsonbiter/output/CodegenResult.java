@@ -77,7 +77,7 @@ class CodegenResult {
         if (prelude != null) {
             append(lines, CodegenResult.bufferToWriteOp(prelude));
         }
-        append(lines, String.format("encode_((%s)obj, stream);", clazz.getCanonicalName()));
+        append(lines, "encode_((" + clazz.getCanonicalName() + ")obj, stream);");
         if (epilogue != null) {
             append(lines, CodegenResult.bufferToWriteOp(epilogue));
         }
@@ -95,16 +95,13 @@ class CodegenResult {
             return "";
         }
         if (buffered.length() == 1) {
-            return String.format("stream.write((byte)'%s');", escape(buffered.charAt(0)));
+            return "stream.write((byte)'" + escape(buffered.charAt(0)) + "');";
         } else if (buffered.length() == 2) {
-            return String.format("stream.write((byte)'%s', (byte)'%s');",
-                    escape(buffered.charAt(0)), escape(buffered.charAt(1)));
+            return "stream.write((byte)'" + escape(buffered.charAt(0)) + "', (byte)'" + escape(buffered.charAt(1)) + "');";
         } else if (buffered.length() == 3) {
-            return String.format("stream.write((byte)'%s', (byte)'%s', (byte)'%s');",
-                    escape(buffered.charAt(0)), escape(buffered.charAt(1)), escape(buffered.charAt(2)));
+            return "stream.write((byte)'" + escape(buffered.charAt(0)) + "', (byte)'" + escape(buffered.charAt(1)) + "', (byte)'" + escape(buffered.charAt(2)) + "');";
         } else if (buffered.length() == 4) {
-            return String.format("stream.write((byte)'%s', (byte)'%s', (byte)'%s', (byte)'%s');",
-                    escape(buffered.charAt(0)), escape(buffered.charAt(1)), escape(buffered.charAt(2)), escape(buffered.charAt(3)));
+            return "stream.write((byte)'" + escape(buffered.charAt(0)) + "', (byte)'" + escape(buffered.charAt(1)) + "', (byte)'" + escape(buffered.charAt(2)) + "', (byte)'" + escape(buffered.charAt(3)) + "');";
         } else {
             StringBuilder escaped = new StringBuilder();
             for (int i = 0; i < buffered.length(); i++) {
@@ -114,7 +111,7 @@ class CodegenResult {
                 }
                 escaped.append(c);
             }
-            return String.format("stream.writeRaw(\"%s\", %s);", escaped.toString(), buffered.length());
+            return "stream.writeRaw(\"" + escaped + "\", " + buffered.length() + ");";
         }
     }
 

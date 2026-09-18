@@ -167,7 +167,7 @@ class CodegenImplNative {
 
     public static String genReadOp(Type type) {
         String cacheKey = TypeLiteral.create(type).getDecoderCacheKey();
-        return String.format("(%s)%s", getTypeName(type), genReadOp(cacheKey, type));
+        return "(" + getTypeName(type) + ")" + genReadOp(cacheKey, type);
     }
 
     public static String getTypeName(Type fieldType) {
@@ -188,7 +188,7 @@ class CodegenImplNative {
     static String genField(Binding field) {
         String fieldCacheKey = field.decoderCacheKey();
         Type fieldType = field.valueType;
-        return String.format("(%s)%s", getTypeName(fieldType), genReadOp(fieldCacheKey, fieldType));
+        return "(" + getTypeName(fieldType) + ")" + genReadOp(fieldCacheKey, fieldType);
 
     }
 
@@ -212,10 +212,10 @@ class CodegenImplNative {
                 }
                 Codegen.getDecoder(cacheKey, valueType);
                 if (Codegen.canStaticAccess(cacheKey)) {
-                    return String.format("%s.decode_(iter)", cacheKey);
+                    return cacheKey + ".decode_(iter)";
                 } else {
                     // can not use static "decode_" method to access, go through codegen cache
-                    return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.read(\"%s\", iter)", cacheKey);
+                    return "com.github.tommyettinger.jsonbiter.CodegenAccess.read(\"" + cacheKey + "\", iter)";
                 }
             }
         }
@@ -223,50 +223,50 @@ class CodegenImplNative {
             if (!(decoder instanceof Decoder.BooleanDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.BooleanDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readBoolean(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readBoolean(\"" + cacheKey + "\", iter)";
         }
         if (valueType == byte.class) {
             if (!(decoder instanceof Decoder.ShortDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.ShortDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readShort(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readShort(\"" + cacheKey + "\", iter)";
         }
         if (valueType == short.class) {
             if (!(decoder instanceof Decoder.ShortDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.ShortDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readShort(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readShort(\"" + cacheKey + "\", iter)";
         }
         if (valueType == char.class) {
             if (!(decoder instanceof Decoder.IntDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.IntDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readInt(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readInt(\"" + cacheKey + "\", iter)";
         }
         if (valueType == int.class) {
             if (!(decoder instanceof Decoder.IntDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.IntDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readInt(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readInt(\"" + cacheKey + "\", iter)";
         }
         if (valueType == long.class) {
             if (!(decoder instanceof Decoder.LongDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.LongDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readLong(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readLong(\"" + cacheKey + "\", iter)";
         }
         if (valueType == float.class) {
             if (!(decoder instanceof Decoder.FloatDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.FloatDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readFloat(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readFloat(\"" + cacheKey + "\", iter)";
         }
         if (valueType == double.class) {
             if (!(decoder instanceof Decoder.DoubleDecoder)) {
                 throw new JsonException("decoder for " + cacheKey + "must implement Decoder.DoubleDecoder");
             }
-            return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.readDouble(\"%s\", iter)", cacheKey);
+            return "com.github.tommyettinger.jsonbiter.CodegenAccess.readDouble(\"" + cacheKey + "\", iter)";
         }
-        return String.format("com.github.tommyettinger.jsonbiter.CodegenAccess.read(\"%s\", iter)", cacheKey);
+        return "com.github.tommyettinger.jsonbiter.CodegenAccess.read(\"" + cacheKey + "\", iter)";
     }
 }

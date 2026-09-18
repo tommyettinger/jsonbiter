@@ -10,7 +10,7 @@ class CodegenImplObject {
         CodegenResult ctx = new CodegenResult();
         ClassDescriptor desc = ClassDescriptor.getEncodingClassDescriptor(classInfo, false);
         List<EncodeTo> encodeTos = desc.encodeTos();
-        ctx.append(String.format("public static void encode_(%s obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {", classInfo.clazz.getCanonicalName()));
+        ctx.append("public static void encode_(" + classInfo.clazz.getCanonicalName() + " obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
         if (hasFieldOutput(desc)) {
             int notFirst = 0;
             if (noIndention) {
@@ -23,7 +23,7 @@ class CodegenImplObject {
             }
             for (UnwrapperDescriptor unwrapper : desc.unwrappers) {
                 if (unwrapper.isMap) {
-                    ctx.append(String.format("java.util.Map map = (java.util.Map)obj.%s();", unwrapper.method.getName()));
+                    ctx.append("java.util.Map map = (java.util.Map)obj." + unwrapper.method.getName() + "();");
                     ctx.append("java.util.Iterator iter = map.entrySet().iterator();");
                     ctx.append("while(iter.hasNext()) {");
                     ctx.append("java.util.Map.Entry entry = (java.util.Map.Entry)iter.next();");
@@ -35,7 +35,7 @@ class CodegenImplObject {
                     ctx.append("}");
                 } else {
                     notFirst = appendComma(ctx, notFirst);
-                    ctx.append(String.format("obj.%s(stream);", unwrapper.method.getName()));
+                    ctx.append("obj." + unwrapper.method.getName() + "(stream);");
                 }
             }
             if (noIndention) {
@@ -90,7 +90,7 @@ class CodegenImplObject {
             if (noIndention) {
                 ctx.append(CodegenResult.bufferToWriteOp("\"" + toName + "\":"));
             } else {
-                ctx.append(String.format("stream.writeObjectField(\"%s\");", toName));
+                ctx.append("stream.writeObjectField(\"" + toName + "\");");
             }
         } else {
             notFirst = appendComma(ctx, notFirst);
@@ -100,17 +100,16 @@ class CodegenImplObject {
                 ctx.buffer('"');
                 ctx.buffer(':');
             } else {
-                ctx.append(String.format("stream.writeObjectField(\"%s\");", toName));
+                ctx.append("stream.writeObjectField(\"" + toName + "\");");
             }
             if (nullable) {
-                ctx.append(String.format("if (%s == null) { stream.writeNull(); } else {", valueAccessor));
+                ctx.append("if (" + valueAccessor + " == null) { stream.writeNull(); } else {");
             }
         }
         if (encoder == null) {
             CodegenImplNative.genWriteOp(ctx, valueAccessor, binding.valueType, nullable, true);
         } else {
-            ctx.append(String.format("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeVal(\"%s\", %s, stream);",
-                    fieldCacheKey, valueAccessor));
+            ctx.append("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeVal(\"" + fieldCacheKey + "\", " + valueAccessor + ", stream);");
         }
         if (nullable || omitZero) {
             ctx.append("}");

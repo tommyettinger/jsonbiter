@@ -49,7 +49,7 @@ class CodegenImplArray {
         }
         CodegenResult ctx = new CodegenResult();
         ctx.append("public static void encode_(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
-        ctx.append(String.format("%s[] arr = (%s[])obj;", compType.getCanonicalName(), compType.getCanonicalName()));
+        ctx.append(compType.getCanonicalName() + "[] arr = (" + compType.getCanonicalName() + "[])obj;");
         if (noIndention) {
             ctx.append("if (arr.length == 0) { return; }");
             ctx.buffer('[');
@@ -58,7 +58,7 @@ class CodegenImplArray {
             ctx.append("stream.writeArrayStart(); stream.writeIndention();");
         }
         ctx.append("int i = 0;");
-        ctx.append(String.format("%s e = arr[i++];", compType.getCanonicalName()));
+        ctx.append(compType.getCanonicalName() + " e = arr[i++];");
         if (isCollectionValueNullable) {
             ctx.append("if (e == null) { stream.writeNull(); } else {");
             CodegenImplNative.genWriteOp(ctx, "e", compType, true);

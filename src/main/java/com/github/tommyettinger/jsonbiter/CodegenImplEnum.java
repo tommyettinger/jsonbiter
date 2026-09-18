@@ -12,7 +12,7 @@ class CodegenImplEnum {
         append(lines, "switch (field.len()) {");
         append(lines, renderTriTree(buildTriTree(Arrays.asList(classInfo.clazz.getEnumConstants()))));
         append(lines, "}"); // end of switch
-        append(lines, String.format("throw iter.reportError(\"decode enum\", field + \" is not valid enum for %s\");", classInfo.clazz.getName()));
+        append(lines, "throw iter.reportError(\"decode enum\", field + \" is not valid enum for " + classInfo.clazz.getName() + "\");");
         return lines.toString();
     }
 
@@ -59,12 +59,12 @@ class CodegenImplEnum {
                 append(lines, "if (");
                 for (int j = 0; j < bytesToCompare.size(); j++) {
                     Byte a = bytesToCompare.get(j);
-                    append(lines, String.format("field.at(%d)==%s && ", i - bytesToCompare.size() + j, a));
+                    append(lines, "field.at(" + (i - bytesToCompare.size() + j) + ")==" + a + " && ");
                 }
-                append(lines, String.format("field.at(%d)==%s", i, b));
+                append(lines, "field.at(" + i + ")==" + b);
                 append(lines, ") {");
                 Object e = entry.getValue();
-                append(lines, String.format("return %s.%s;", e.getClass().getName(), e.toString()));
+                append(lines, "return " + e.getClass().getName() + "." + e + ";");
                 append(lines, "}");
                 continue;
             }
@@ -78,9 +78,9 @@ class CodegenImplEnum {
             append(lines, "if (");
             for (int j = 0; j < bytesToCompare.size(); j++) {
                 Byte a = bytesToCompare.get(j);
-                append(lines, String.format("field.at(%d)==%s && ", i - bytesToCompare.size() + j, a));
+                append(lines, "field.at(" + (i - bytesToCompare.size() + j) + ")==" + a + " && ");
             }
-            append(lines, String.format("field.at(%d)==%s", i, b));
+            append(lines, "field.at(" + i + ")==" + b);
             append(lines, ") {");
             addFieldDispatch(lines, len, i + 1, next, new ArrayList<Byte>());
             append(lines, "}");

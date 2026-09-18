@@ -258,7 +258,7 @@ public abstract class Any implements Iterable<Any> {
     public abstract void writeTo(JsonStream stream) throws IOException;
 
     protected JsonException reportUnexpectedType(ValueType toType) {
-        throw new JsonException(String.format("can not convert %s to %s", valueType(), toType));
+        throw new JsonException("can not convert " + valueType() + " to " + toType);
     }
 
     public static Any lazyString(byte[] data, int head, int tail) {

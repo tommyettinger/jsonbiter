@@ -47,8 +47,8 @@ class StreamImplString {
     private final static int SURR2_LAST = 0xDFFF;
 
     static {
-        for (int i = 0; i < CAN_DIRECT_WRITE.length; i++) {
-            if (i > 31 && i <= 126 && i != '"' && i != '\\') {
+        for (int i = 32; i < 127; i++) {
+            if (i != '"' && i != '\\') {
                 CAN_DIRECT_WRITE[i] = true;
             }
         }
@@ -226,10 +226,10 @@ class StreamImplString {
     }
 
     private static void writeAsSlashU(JsonStream stream, int c) throws IOException {
-        byte b4 = (byte) (c & 0xf);
-        byte b3 = (byte) (c >> 4 & 0xf);
-        byte b2 = (byte) (c >> 8 & 0xf);
-        byte b1 = (byte) (c >> 12 & 0xf);
+        int b4 = (c & 0xf);
+        int b3 = (c >> 4 & 0xf);
+        int b2 = (c >> 8 & 0xf);
+        int b1 = (c >> 12 & 0xf);
         stream.write((byte) '\\', (byte) 'u', ITOA[b1], ITOA[b2], ITOA[b3], ITOA[b4]);
     }
 }

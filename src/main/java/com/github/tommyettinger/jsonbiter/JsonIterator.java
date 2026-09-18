@@ -9,10 +9,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JsonIterator implements Closeable {
 
@@ -202,7 +199,7 @@ public class JsonIterator implements Closeable {
     }
 
     public String readNumberAsString() throws IOException {
-        IterImplForStreaming.numberChars numberChars = IterImplForStreaming.readNumber(this);
+        IterImpl.NumberChars numberChars = IterImpl.readNumber(this);
         return new String(numberChars.chars, 0, numberChars.charsLength);
     }
 
@@ -252,7 +249,7 @@ public class JsonIterator implements Closeable {
         if (valueType != ValueType.NUMBER) {
             throw reportError("readBigDecimal", "not number");
         }
-        IterImplForStreaming.numberChars numberChars = IterImplForStreaming.readNumber(this);
+        IterImpl.NumberChars numberChars = IterImpl.readNumber(this);
         return new BigDecimal(numberChars.chars, 0, numberChars.charsLength);
     }
 
@@ -266,7 +263,7 @@ public class JsonIterator implements Closeable {
         if (valueType != ValueType.NUMBER) {
             throw reportError("readBigDecimal", "not number");
         }
-        IterImplForStreaming.numberChars numberChars = IterImplForStreaming.readNumber(this);
+        IterImpl.NumberChars numberChars = IterImpl.readNumber(this);
         return new BigInteger(new String(numberChars.chars, 0, numberChars.charsLength));
     }
 
@@ -303,7 +300,7 @@ public class JsonIterator implements Closeable {
                 case STRING:
                     return readString();
                 case NUMBER:
-                    IterImplForStreaming.numberChars numberChars = IterImplForStreaming.readNumber(this);
+                    IterImpl.NumberChars numberChars = IterImpl.readNumber(this);
                     String numberStr = new String(numberChars.chars, 0, numberChars.charsLength);
                     Double number = Double.valueOf(numberStr);
                     if (numberChars.dotFound) {
@@ -555,5 +552,6 @@ public class JsonIterator implements Closeable {
             return;
         }
         isStreamingEnabled = true;
+        IterImpl.INSTANCE = new IterImplForStreaming();
     }
 }

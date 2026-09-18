@@ -6,38 +6,11 @@ import com.github.tommyettinger.jsonbiter.spi.Slice;
 
 import java.io.IOException;
 
-class IterImplForStreaming {
+import static com.github.tommyettinger.jsonbiter.IterImpl.*;
 
-    public static final int readObjectFieldAsHash(JsonIterator iter) throws IOException {
-        if (nextToken(iter) != '"') {
-            throw iter.reportError("readObjectFieldAsHash", "expect \"");
-        }
-        long hash = 0x811c9dc5;
-        for (; ; ) {
-            byte c = 0;
-            int i = iter.head;
-            for (; i < iter.tail; i++) {
-                c = iter.buf[i];
-                if (c == '"') {
-                    break;
-                }
-                hash ^= c;
-                hash *= 0x1000193;
-            }
-            if (c == '"') {
-                iter.head = i + 1;
-                if (nextToken(iter) != ':') {
-                    throw iter.reportError("readObjectFieldAsHash", "expect :");
-                }
-                return (int) hash;
-            }
-            if (!loadMore(iter)) {
-                throw iter.reportError("readObjectFieldAsHash", "unmatched quote");
-            }
-        }
-    }
+class IterImplForStreaming implements IterSurface {
 
-    public static final Slice readObjectFieldAsSlice(JsonIterator iter) throws IOException {
+    public Slice readObjectFieldAsSlice(JsonIterator iter) throws IOException {
         Slice field = readSlice(iter);
         boolean notCopied = field != null;
         if (CodegenAccess.skipWhitespacesWithoutLoadMore(iter)) {
@@ -58,7 +31,7 @@ class IterImplForStreaming {
         return field;
     }
 
-    final static void skipArray(JsonIterator iter) throws IOException {
+    public void skipArray(JsonIterator iter) throws IOException {
         int level = 1;
         for (; ; ) {
             for (int i = iter.head; i < iter.tail; i++) {
@@ -71,7 +44,7 @@ class IterImplForStreaming {
                     case '[': // If open symbol, increase level
                         level++;
                         break;
-                    case ']': // If close symbol, decrease level
+                    case ']': // If close symbol, increase level
                         level--;
 
                         // If we have returned to the original level, we're done
@@ -88,7 +61,7 @@ class IterImplForStreaming {
         }
     }
 
-    final static void skipObject(JsonIterator iter) throws IOException {
+    public void skipObject(JsonIterator iter) throws IOException {
         int level = 1;
         for (; ; ) {
             for (int i = iter.head; i < iter.tail; i++) {
@@ -101,7 +74,7 @@ class IterImplForStreaming {
                     case '{': // If open symbol, increase level
                         level++;
                         break;
-                    case '}': // If close symbol, decrease level
+                    case '}': // If close symbol, increase level
                         level--;
 
                         // If we have returned to the original level, we're done
@@ -118,7 +91,7 @@ class IterImplForStreaming {
         }
     }
 
-    final static void skipString(JsonIterator iter) throws IOException {
+    public void skipString(JsonIterator iter) throws IOException {
         for (; ; ) {
             int end = IterImplSkip.findStringEnd(iter);
             if (end == -1) {
@@ -147,8 +120,7 @@ class IterImplForStreaming {
                     throw iter.reportError("skipString", "incomplete string");
                 }
                 if (escaped) {
-                    // TODO add unit test to prove/verify bug
-                    iter.head += 1; // skip the first char as last char is \
+                    iter.head = 1; // skip the first char as last char is \
                 }
             } else {
                 iter.head = end;
@@ -157,7 +129,7 @@ class IterImplForStreaming {
         }
     }
 
-    final static void skipUntilBreak(JsonIterator iter) throws IOException {
+    public void skipUntilBreak(JsonIterator iter) throws IOException {
         // true, false, null, number
         for (; ; ) {
             for (int i = iter.head; i < iter.tail; i++) {
@@ -174,7 +146,7 @@ class IterImplForStreaming {
         }
     }
 
-    final static boolean skipNumber(JsonIterator iter) throws IOException {
+    public boolean skipNumber(JsonIterator iter) throws IOException {
         // true, false, null, number
         boolean dotFound = false;
         for (; ; ) {
@@ -197,8 +169,8 @@ class IterImplForStreaming {
     }
 
     // read the bytes between " "
-    final static Slice readSlice(JsonIterator iter) throws IOException {
-        if (IterImpl.nextToken(iter) != '"') {
+    public Slice readSlice(JsonIterator iter) throws IOException {
+        if (nextToken(iter) != '"') {
             throw iter.reportError("readSlice", "expect \" for string");
         }
         int end = IterImplString.findSliceEnd(iter);
@@ -232,7 +204,7 @@ class IterImplForStreaming {
         }
     }
 
-    final static byte nextToken(JsonIterator iter) throws IOException {
+    public byte nextToken(JsonIterator iter) throws IOException {
         for (; ; ) {
             for (int i = iter.head; i < iter.tail; i++) {
                 byte c = iter.buf[i];
@@ -253,7 +225,7 @@ class IterImplForStreaming {
         }
     }
 
-    public final static boolean loadMore(JsonIterator iter) throws IOException {
+    public boolean loadMore(JsonIterator iter) throws IOException {
         if (iter.in == null) {
             return false;
         }
@@ -274,17 +246,17 @@ class IterImplForStreaming {
         return true;
     }
 
-    private static boolean keepSkippedBytesThenRead(JsonIterator iter) throws IOException {
+    public boolean keepSkippedBytesThenRead(JsonIterator iter) throws IOException {
         int offset = iter.tail - iter.skipStartedAt;
         byte[] srcBuffer = iter.buf;
         // Check there is no unused buffer capacity
-        if ((getUnusedBufferByteCount(iter)) == 0) {
-          // If auto expand buffer enabled, then create larger buffer
-          if (iter.autoExpandBufferStep > 0) {
-            iter.buf = new byte[iter.buf.length + iter.autoExpandBufferStep];
-          } else {
-            throw iter.reportError("loadMore", String.format("buffer is full and autoexpansion is disabled. tail: [%s] skipStartedAt: [%s]", iter.tail, iter.skipStartedAt));
-          }
+        if (iter.buf.length - iter.tail + iter.skipStartedAt == 0) {
+            // If auto expand buffer enabled, then create larger buffer
+            if (iter.autoExpandBufferStep > 0) {
+                iter.buf = new byte[iter.buf.length + iter.autoExpandBufferStep];
+            } else {
+                throw iter.reportError("loadMore", "buffer is full and autoexpansion is disabled");
+            }
         }
         System.arraycopy(srcBuffer, iter.skipStartedAt, iter.buf, 0, offset);
         int n = iter.in.read(iter.buf, offset, iter.buf.length - offset);
@@ -302,12 +274,7 @@ class IterImplForStreaming {
         return true;
     }
 
-    private static int getUnusedBufferByteCount(JsonIterator iter) {
-        // Get bytes from 0 to skipStart + from tail till end
-        return iter.buf.length - iter.tail + iter.skipStartedAt;
-    }
-
-    final static byte readByte(JsonIterator iter) throws IOException {
+    public byte readByte(JsonIterator iter) throws IOException {
         if (iter.head == iter.tail) {
             if (!loadMore(iter)) {
                 throw iter.reportError("readByte", "no more to read");
@@ -316,7 +283,7 @@ class IterImplForStreaming {
         return iter.buf[iter.head++];
     }
 
-    public static Any readAny(JsonIterator iter) throws IOException {
+    public Any readAny(JsonIterator iter) throws IOException {
         // TODO: avoid small memory allocation
         iter.skipStartedAt = iter.head;
         byte c = nextToken(iter);
@@ -356,7 +323,7 @@ class IterImplForStreaming {
         }
     }
 
-    private static byte[] copySkippedBytes(JsonIterator iter) {
+    public byte[] copySkippedBytes(JsonIterator iter) {
         int start = iter.skipStartedAt;
         iter.skipStartedAt = -1;
         int end = iter.head;
@@ -365,7 +332,7 @@ class IterImplForStreaming {
         return bytes;
     }
 
-    public static void skipFixedBytes(JsonIterator iter, int n) throws IOException {
+    public void skipFixedBytes(JsonIterator iter, int n) throws IOException {
         iter.head += n;
         if (iter.head >= iter.tail) {
             int more = iter.head - iter.tail;
@@ -380,7 +347,7 @@ class IterImplForStreaming {
         }
     }
 
-    public static int updateStringCopyBound(final JsonIterator iter, final int bound) {
+    public int updateStringCopyBound(final JsonIterator iter, final int bound) {
         if (bound > iter.tail - iter.head) {
             return iter.tail - iter.head;
         } else {
@@ -388,7 +355,7 @@ class IterImplForStreaming {
         }
     }
 
-    public final static int readStringSlowPath(JsonIterator iter, int j) throws IOException {
+    public int readStringSlowPath(JsonIterator iter, int j) throws IOException {
         boolean isExpectingLowSurrogate = false;
         for (;;) {
             int bc = readByte(iter);
@@ -493,137 +460,12 @@ class IterImplForStreaming {
         }
     }
 
-    static long readLongSlowPath(final JsonIterator iter, long value) throws IOException {
-        value = -value; // add negatives to avoid redundant checks for Long.MIN_VALUE on each iteration
-        long multmin = -922337203685477580L; // limit / 10
-        for (; ; ) {
-            for (int i = iter.head; i < iter.tail; i++) {
-                int ind = IterImplNumber.intDigits[iter.buf[i]];
-                if (ind == IterImplNumber.INVALID_CHAR_FOR_NUMBER) {
-                    iter.head = i;
-                    return value;
-                }
-                if (value < multmin) {
-                    throw iter.reportError("readLongSlowPath", "value is too large for long");
-                }
-                value = (value << 3) + (value << 1) - ind;
-                if (value >= 0) {
-                    throw iter.reportError("readLongSlowPath", "value is too large for long");
-                }
-            }
-            if (!IterImpl.loadMore(iter)) {
-                iter.head = iter.tail;
-                return value;
-            }
-        }
-    }
 
-    static int readIntSlowPath(final JsonIterator iter, int value) throws IOException {
-        value = -value; // add negatives to avoid redundant checks for Integer.MIN_VALUE on each iteration
-        int multmin = -214748364; // limit / 10
-        for (; ; ) {
-            for (int i = iter.head; i < iter.tail; i++) {
-                int ind = IterImplNumber.intDigits[iter.buf[i]];
-                if (ind == IterImplNumber.INVALID_CHAR_FOR_NUMBER) {
-                    iter.head = i;
-                    return value;
-                }
-                if (value < multmin) {
-                    throw iter.reportError("readIntSlowPath", "value is too large for int");
-                }
-                value = (value << 3) + (value << 1) - ind;
-                if (value >= 0) {
-                    throw iter.reportError("readIntSlowPath", "value is too large for int");
-                }
-            }
-            if (!IterImpl.loadMore(iter)) {
-                iter.head = iter.tail;
-                return value;
-            }
-        }
-    }
-
-    public static final double readDoubleSlowPath(final JsonIterator iter) throws IOException {
-        try {
-            numberChars numberChars = readNumber(iter);
-            if (numberChars.charsLength == 0 && iter.whatIsNext() == ValueType.STRING) {
-                String possibleInf = iter.readString();
-                if ("infinity".equals(possibleInf)) {
-                    return Double.POSITIVE_INFINITY;
-                }
-                if ("-infinity".equals(possibleInf)) {
-                    return Double.NEGATIVE_INFINITY;
-                }
-                throw iter.reportError("readDoubleSlowPath", "expect number but found string: " + possibleInf);
-            }
-            return Double.valueOf(new String(numberChars.chars, 0, numberChars.charsLength));
-        } catch (NumberFormatException e) {
-            throw iter.reportError("readDoubleSlowPath", e.toString());
-        }
-    }
-
-    static class numberChars {
-        char[] chars;
-        int charsLength;
-        boolean dotFound;
-    }
-
-    public static final numberChars readNumber(final JsonIterator iter) throws IOException {
-        int j = 0;
-        boolean dotFound = false;
-        for (; ; ) {
-            for (int i = iter.head; i < iter.tail; i++) {
-                if (j == iter.reusableChars.length) {
-                    char[] newBuf = new char[iter.reusableChars.length * 2];
-                    System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
-                    iter.reusableChars = newBuf;
-                }
-                byte c = iter.buf[i];
-                switch (c) {
-                    case '.':
-                    case 'e':
-                    case 'E':
-                        dotFound = true;
-                        // fallthrough
-                    case '-':
-                    case '+':
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9':
-                        iter.reusableChars[j++] = (char) c;
-                        break;
-                    default:
-                        iter.head = i;
-                        numberChars numberChars = new numberChars();
-                        numberChars.chars = iter.reusableChars;
-                        numberChars.charsLength = j;
-                        numberChars.dotFound = dotFound;
-                        return numberChars;
-                }
-            }
-            if (!IterImpl.loadMore(iter)) {
-                iter.head = iter.tail;
-                numberChars numberChars = new numberChars();
-                numberChars.chars = iter.reusableChars;
-                numberChars.charsLength = j;
-                numberChars.dotFound = dotFound;
-                return numberChars;
-            }
-        }
-    }
-
-    static final double readDouble(final JsonIterator iter) throws IOException {
+    public double readDouble(final JsonIterator iter) throws IOException {
         return readDoubleSlowPath(iter);
     }
 
-    static final long readLong(final JsonIterator iter, final byte c) throws IOException {
+    public long readLong(final JsonIterator iter, final byte c) throws IOException {
         long ind = IterImplNumber.intDigits[c];
         if (ind == 0) {
             assertNotLeadingZero(iter);
@@ -632,10 +474,10 @@ class IterImplForStreaming {
         if (ind == IterImplNumber.INVALID_CHAR_FOR_NUMBER) {
             throw iter.reportError("readLong", "expect 0~9");
         }
-        return IterImplForStreaming.readLongSlowPath(iter, ind);
+        return readLongSlowPath(iter, ind);
     }
 
-    static final int readInt(final JsonIterator iter, final byte c) throws IOException {
+    public int readInt(final JsonIterator iter, final byte c) throws IOException {
         int ind = IterImplNumber.intDigits[c];
         if (ind == 0) {
             assertNotLeadingZero(iter);
@@ -644,20 +486,6 @@ class IterImplForStreaming {
         if (ind == IterImplNumber.INVALID_CHAR_FOR_NUMBER) {
             throw iter.reportError("readInt", "expect 0~9");
         }
-        return IterImplForStreaming.readIntSlowPath(iter, ind);
-    }
-
-    static void assertNotLeadingZero(JsonIterator iter) throws IOException {
-        try {
-            byte nextByte = iter.buf[iter.head];
-            int ind2 = IterImplNumber.intDigits[nextByte];
-            if (ind2 == IterImplNumber.INVALID_CHAR_FOR_NUMBER) {
-                return;
-            }
-            throw iter.reportError("assertNotLeadingZero", "leading zero is invalid");
-        } catch (ArrayIndexOutOfBoundsException e) {
-            iter.head = iter.tail;
-            return;
-        }
+        return readIntSlowPath(iter, ind);
     }
 }

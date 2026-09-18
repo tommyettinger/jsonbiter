@@ -132,10 +132,6 @@ public class CodegenAccess {
         return field;
     }
 
-    public static final int readObjectFieldAsHash(JsonIterator iter) throws IOException {
-        return IterImpl.readObjectFieldAsHash(iter);
-    }
-
     public static final Slice readObjectFieldAsSlice(JsonIterator iter) throws IOException {
         return IterImpl.readObjectFieldAsSlice(iter);
     }

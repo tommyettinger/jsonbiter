@@ -5,6 +5,7 @@ import com.github.tommyettinger.jsonbiter.spi.JsonException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import junit.framework.TestCase;
 import org.junit.experimental.categories.Category;
 
@@ -13,7 +14,7 @@ public class IterImplForStreamingTest extends TestCase {
 	public void testReadMaxDouble() throws Exception {
 		String maxDouble = "1.7976931348623157e+308";
 		JsonIterator iter = JsonIterator.parse("1.7976931348623157e+308");
-		IterImplForStreaming.numberChars numberChars = IterImplForStreaming.readNumber(iter);
+		IterImpl.NumberChars numberChars = IterImpl.readNumber(iter);
 		String number = new String(numberChars.chars, 0, numberChars.charsLength);
 		assertEquals(maxDouble, number);
 	}

@@ -93,13 +93,13 @@ class IterImplNumber {
         if (c == '-') {
             c = IterImpl.readByte(iter);
             if (IterImplNumber.intDigits[c] == 0) {
-                IterImplForStreaming.assertNotLeadingZero(iter);
+                IterImpl.assertNotLeadingZero(iter);
                 return 0;
             }
             return IterImpl.readLong(iter, c);
         } else {
             if (IterImplNumber.intDigits[c] == 0) {
-                IterImplForStreaming.assertNotLeadingZero(iter);
+                IterImpl.assertNotLeadingZero(iter);
                 return 0;
             }
             long val = IterImpl.readLong(iter, c);

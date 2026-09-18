@@ -4,7 +4,7 @@ import java.io.IOException;
 
 class IterImplArray {
 
-    public static final boolean readArray(final JsonIterator iter) throws IOException {
+    public static boolean readArray(final JsonIterator iter) throws IOException {
         byte c = IterImpl.nextToken(iter);
         switch (c) {
             case '[':
@@ -25,7 +25,7 @@ class IterImplArray {
         }
     }
 
-    public static final boolean readArrayCB(final JsonIterator iter, final JsonIterator.ReadArrayCallback callback, Object attachment) throws IOException {
+    public static boolean readArrayCB(final JsonIterator iter, final JsonIterator.ReadArrayCallback callback, Object attachment) throws IOException {
         byte c = IterImpl.nextToken(iter);
         if (c == '[') {
             c = IterImpl.nextToken(iter);

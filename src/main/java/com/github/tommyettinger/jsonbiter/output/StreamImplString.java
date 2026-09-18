@@ -54,7 +54,7 @@ class StreamImplString {
         }
     }
 
-    public static final void writeString(final JsonStream stream, final String val) throws IOException {
+    public static void writeString(final JsonStream stream, final String val) throws IOException {
         int i = 0;
         int valLen = val.length();
         int toWriteLen = valLen;
@@ -94,7 +94,7 @@ class StreamImplString {
         stream.write('"');
     }
 
-    public static final void writeStringWithoutQuote(final JsonStream stream, final String val) throws IOException {
+    public static void writeStringWithoutQuote(final JsonStream stream, final String val) throws IOException {
         int i = 0;
         int valLen = val.length();
         int toWriteLen = valLen;

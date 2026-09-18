@@ -48,7 +48,7 @@ class StreamImplNumber {
 
     private static final byte[] MIN_INT = "-2147483648".getBytes();
 
-    public static final void writeInt(final JsonStream stream, int value) throws IOException {
+    public static void writeInt(final JsonStream stream, int value) throws IOException {
         stream.ensure(12);
         byte[] buf = stream.buf;
         int pos = stream.count;
@@ -114,7 +114,7 @@ class StreamImplNumber {
 
     private static final byte[] MIN_LONG = "-9223372036854775808".getBytes();
 
-    public static final void writeLong(final JsonStream stream, long value) throws IOException {
+    public static void writeLong(final JsonStream stream, long value) throws IOException {
         stream.ensure(22);
         byte[] buf = stream.buf;
         int pos = stream.count;
@@ -210,7 +210,7 @@ class StreamImplNumber {
 
     private static final int POW10[] = {1, 10, 100, 1000, 10000, 100000, 1000000};
 
-    public static final void writeFloat(JsonStream stream, float val) throws IOException {
+    public static void writeFloat(JsonStream stream, float val) throws IOException {
         if (val < 0) {
             if (val == Float.NEGATIVE_INFINITY) {
                 stream.writeVal("-Infinity");
@@ -246,7 +246,7 @@ class StreamImplNumber {
         }
     }
 
-    public static final void writeDouble(JsonStream stream, double val) throws IOException {
+    public static void writeDouble(JsonStream stream, double val) throws IOException {
         if (val < 0) {
             if (val == Double.NEGATIVE_INFINITY) {
                 stream.writeVal("-Infinity");

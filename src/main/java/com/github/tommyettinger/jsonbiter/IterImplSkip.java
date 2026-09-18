@@ -16,7 +16,7 @@ class IterImplSkip {
         breaks[']'] = true;
     }
 
-    public static final void skip(JsonIterator iter) throws IOException {
+    public static void skip(JsonIterator iter) throws IOException {
         byte c = IterImpl.nextToken(iter);
         switch (c) {
             case '"':
@@ -56,7 +56,7 @@ class IterImplSkip {
     // adapted from: https://github.com/buger/jsonparser/blob/master/parser.go
     // Tries to find the end of string
     // Support if string contains escaped quote symbols.
-    final static int findStringEnd(JsonIterator iter) {
+    static int findStringEnd(JsonIterator iter) {
         boolean escaped = false;
         for (int i = iter.head; i < iter.tail; i++) {
             byte c = iter.buf[i];

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 class IterImplObject {
 
-    public static final String readObject(JsonIterator iter) throws IOException {
+    public static String readObject(JsonIterator iter) throws IOException {
         byte c = IterImpl.nextToken(iter);
         switch (c) {
             case 'n':
@@ -37,7 +37,7 @@ class IterImplObject {
         }
     }
 
-    public static final boolean readObjectCB(JsonIterator iter, JsonIterator.ReadObjectCallback cb, Object attachment) throws IOException {
+    public static boolean readObjectCB(JsonIterator iter, JsonIterator.ReadObjectCallback cb, Object attachment) throws IOException {
         byte c = IterImpl.nextToken(iter);
         if ('{' == c) {
             c = IterImpl.nextToken(iter);

@@ -408,7 +408,7 @@ public class JsonIterator implements Closeable {
         IterImplSkip.skip(this);
     }
 
-    public static final <T> T deserialize(Config config, String input, Class<T> clazz) {
+    public static <T> T deserialize(Config config, String input, Class<T> clazz) {
         JsoniterSpi.setCurrentConfig(config);
         try {
             return deserialize(input.getBytes(), clazz);
@@ -417,11 +417,11 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final <T> T deserialize(String input, Class<T> clazz) {
+    public static <T> T deserialize(String input, Class<T> clazz) {
         return deserialize(input.getBytes(), clazz);
     }
 
-    public static final <T> T deserialize(Config config, String input, TypeLiteral<T> typeLiteral) {
+    public static <T> T deserialize(Config config, String input, TypeLiteral<T> typeLiteral) {
         JsoniterSpi.setCurrentConfig(config);
         try {
             return deserialize(input.getBytes(), typeLiteral);
@@ -430,11 +430,11 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final <T> T deserialize(String input, TypeLiteral<T> typeLiteral) {
+    public static <T> T deserialize(String input, TypeLiteral<T> typeLiteral) {
         return deserialize(input.getBytes(), typeLiteral);
     }
 
-    public static final <T> T deserialize(Config config, byte[] input, Class<T> clazz) {
+    public static <T> T deserialize(Config config, byte[] input, Class<T> clazz) {
         JsoniterSpi.setCurrentConfig(config);
         try {
             return deserialize(input, clazz);
@@ -443,7 +443,7 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final <T> T deserialize(byte[] input, Class<T> clazz) {
+    public static <T> T deserialize(byte[] input, Class<T> clazz) {
         int lastNotSpacePos = findLastNotSpacePos(input);
         JsonIterator iter = JsonIteratorPool.borrowJsonIterator();
         iter.reset(input, 0, lastNotSpacePos);
@@ -462,7 +462,7 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final <T> T deserialize(Config config, byte[] input, TypeLiteral<T> typeLiteral) {
+    public static <T> T deserialize(Config config, byte[] input, TypeLiteral<T> typeLiteral) {
         JsoniterSpi.setCurrentConfig(config);
         try {
             return deserialize(input, typeLiteral);
@@ -471,7 +471,7 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final <T> T deserialize(byte[] input, TypeLiteral<T> typeLiteral) {
+    public static <T> T deserialize(byte[] input, TypeLiteral<T> typeLiteral) {
         int lastNotSpacePos = findLastNotSpacePos(input);
         JsonIterator iter = JsonIteratorPool.borrowJsonIterator();
         iter.reset(input, 0, lastNotSpacePos);
@@ -490,7 +490,7 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final Any deserialize(Config config, String input) {
+    public static Any deserialize(Config config, String input) {
         JsoniterSpi.setCurrentConfig(config);
         try {
             return deserialize(input.getBytes());
@@ -499,11 +499,11 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final Any deserialize(String input) {
+    public static Any deserialize(String input) {
         return deserialize(input.getBytes());
     }
 
-    public static final Any deserialize(Config config, byte[] input) {
+    public static Any deserialize(Config config, byte[] input) {
         JsoniterSpi.setCurrentConfig(config);
         try {
             return deserialize(input);
@@ -512,7 +512,7 @@ public class JsonIterator implements Closeable {
         }
     }
 
-    public static final Any deserialize(byte[] input) {
+    public static Any deserialize(byte[] input) {
         int lastNotSpacePos = findLastNotSpacePos(input);
         JsonIterator iter = JsonIteratorPool.borrowJsonIterator();
         iter.reset(input, 0, lastNotSpacePos);

@@ -52,7 +52,7 @@ class IterImplString {
         }
     }
 
-    public static final String readString(JsonIterator iter) throws IOException {
+    public static String readString(JsonIterator iter) throws IOException {
         byte c = IterImpl.nextToken(iter);
         if (c != '"') {
             if (c == 'n') {
@@ -103,7 +103,7 @@ class IterImplString {
     }
 
     // slice does not allow escape
-    final static int findSliceEnd(JsonIterator iter) {
+    static int findSliceEnd(JsonIterator iter) {
         for (int i = iter.head; i < iter.tail; i++) {
             byte c = iter.buf[i];
             if (c == '"') {

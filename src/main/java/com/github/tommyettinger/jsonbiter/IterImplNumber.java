@@ -61,7 +61,7 @@ class IterImplNumber {
         floatDigits['.'] = DOT_IN_NUMBER;
     }
 
-    public static final double readDouble(final JsonIterator iter) throws IOException {
+    public static double readDouble(final JsonIterator iter) throws IOException {
         final byte c = IterImpl.nextToken(iter);
         if (c == '-') {
             return -IterImpl.readDouble(iter);
@@ -71,11 +71,11 @@ class IterImplNumber {
         }
     }
 
-    public static final float readFloat(final JsonIterator iter) throws IOException {
+    public static float readFloat(final JsonIterator iter) throws IOException {
         return (float) IterImplNumber.readDouble(iter);
     }
 
-    public static final int readInt(final JsonIterator iter) throws IOException {
+    public static int readInt(final JsonIterator iter) throws IOException {
         byte c = IterImpl.nextToken(iter);
         if (c == '-') {
             return IterImpl.readInt(iter, IterImpl.readByte(iter));
@@ -88,7 +88,7 @@ class IterImplNumber {
         }
     }
 
-    public static final long readLong(JsonIterator iter) throws IOException {
+    public static long readLong(JsonIterator iter) throws IOException {
         byte c = IterImpl.nextToken(iter);
         if (c == '-') {
             c = IterImpl.readByte(iter);

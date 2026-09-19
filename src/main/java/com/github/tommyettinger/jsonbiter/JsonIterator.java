@@ -302,13 +302,12 @@ public class JsonIterator implements Closeable {
                 case NUMBER:
                     IterImpl.NumberChars numberChars = IterImpl.readNumber(this);
                     String numberStr = new String(numberChars.chars, 0, numberChars.charsLength);
-                    Double number = Double.valueOf(numberStr);
+                    double number = Double.parseDouble(numberStr);
                     if (numberChars.dotFound) {
                         return number;
                     }
-                    double doubleNumber = number;
-                    if (doubleNumber == Math.floor(doubleNumber) && !Double.isInfinite(doubleNumber)) {
-                        long longNumber = Long.valueOf(numberStr);
+                    if (number == Math.floor(number) && !Double.isInfinite(number)) {
+                        long longNumber = Long.parseLong(numberStr);
                         if (longNumber <= Integer.MAX_VALUE && longNumber >= Integer.MIN_VALUE) {
                             return (int) longNumber;
                         }

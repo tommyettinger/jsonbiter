@@ -1,68 +1,12 @@
-# 0.9.22
+# 1.0.0
 
-* fix #167 parse Object.class follow jackson convention. fixed the case of 1.0 parsed as int not double.
-* fix #154 support map integer key
-* fix #152
-
-# 0.9.21
-
-breaking changes
-
-* fix #149 parse Object.class follow jackson convention
-
-bug fixes
-
-* fix #145 add Any.registerEncoders
-* merge #143
-
-# 0.9.20
-
-* fix #136, field with only getter is also considered as java bean property, so that @JsonIgnore on the field should be propagated to getter 
-
-# 0.9.19
-* changed cfg class name to hashcode based
-* fix static codegen
-* fix #133 NPE when no extra
-* fix #132 MaybeEmptyArrayDecoder
-* fix #130 @JsonCreator not compatible with @JsonIgnore
-* fix #126 surrogate unicode
-
-# 0.9.18
-* fix of overflow detection for numeric primitive types
-* fix of method prefix of error message
-* issue #125 avoid nested JsonException
-* fix #109 treat wildcard generics variable as Object
-
-# 0.9.17
-* fix leading zero
-* fix #112 #119
-* fix of parsing zero & min values
-* issue #115 better leading zero detection
-* fix #144, parse max int/long
-* fix #110 if @JsonProperty is marked on field, ignore getter/setter
-
-# 0.9.16
-
-* issue #107 annotation should be marked on getter/setter if present
-* fix ctor is null when encoding issue
-* issue #104, JsonWrapper argument should not be mandatory
-* issue #99 added mustBeValid method to Any class
-* issue #97 demonstrate JsonProperty when both field and setter
-* like "1.0e+10" should not fail
-* issue #94 skip transient field
-* issue #94 fix JsonProperty not changing fromNames and toNames
-* issue #93 some control character should be esacped specially
-* issue #93 fix control character serialization
-* issue #92 fix generics support
-
-# 0.9.15
-
-breaking changes
-
-* `null` is not omitted by default config
-
-new features
-
-* add `defaultValueToOmit` to @JsonProperty
-* add `omitDefaultValue` to config
-* encoder support indention in dynamic mode
+* Forked from jsoniter (hard fork, left network)
+* Merged jsoniter's PR 345 by jefimm https://github.com/json-iterator/java/pull/345
+* Removed dynamic encoder and decoder modes, including optional dependency on Javassist; they didn't work on JDK 9+
+* Removed optional dependencies on Jackson and Gson, along with their compatibility code
+* Remove nullity checks for items and collection values, which weren't compatible with reflection mode
+* Fix streaming code without dynamic mode being needed and without any class rewriting at runtime
+* Replace String.format() usage with String concatenation, for possible GWT support
+* Make extra/JdkDatetimeSupport write Dates as long values to avoid java.text (GWT support)
+* Add jsonbiter.gwt.xml file, also to try to support GWT
+* Changed package from com.jsoniter to com.github.tommyettinger.jsonbiter , so both libraries can be tested at once

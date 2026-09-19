@@ -16,13 +16,13 @@ import java.util.Date;
  */
 public class JdkDatetimeSupport {
 
-    private static boolean initialized = false;
+    private static boolean enabled = false;
 
     public static synchronized void enable(String pattern) {
-        if (JdkDatetimeSupport.initialized) {
+        if (JdkDatetimeSupport.enabled) {
             throw new JsonException("JdkDatetimeSupport.enable can only be called once");
         }
-        initialized = true;
+        enabled = true;
         JsoniterSpi.registerTypeEncoder(Date.class, new Encoder.ReflectionEncoder() {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {

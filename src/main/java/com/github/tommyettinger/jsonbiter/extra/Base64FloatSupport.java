@@ -76,8 +76,8 @@ public class Base64FloatSupport {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {
                 Float number = (Float) obj;
-                long bits = Double.doubleToRawLongBits(number.doubleValue());
-                Base64.encodeLongBits(bits, stream);
+                int bits = Float.floatToRawIntBits(number);
+                Base64.encodeIntBits(bits, stream);
             }
 
             @Override
@@ -89,8 +89,8 @@ public class Base64FloatSupport {
         JsoniterSpi.registerTypeEncoder(float.class, new Encoder.FloatEncoder() {
             @Override
             public void encodeFloat(float obj, JsonStream stream) throws IOException {
-                long bits = Double.doubleToRawLongBits(obj);
-                Base64.encodeLongBits(bits, stream);
+                int bits = Float.floatToRawIntBits(obj);
+                Base64.encodeIntBits(bits, stream);
             }
         });
     }
@@ -126,9 +126,9 @@ public class Base64FloatSupport {
                 byte token = CodegenAccess.nextToken(iter);
                 CodegenAccess.unreadByte(iter);
                 if (token == '"') {
-                    return (float)Double.longBitsToDouble(Base64.decodeLongBits(iter));
+                    return Float.intBitsToFloat(Base64.decodeIntBits(iter));
                 }else {
-                    return (float)iter.readDouble();
+                    return iter.readFloat();
                 }
             }
         });
@@ -138,9 +138,9 @@ public class Base64FloatSupport {
                 byte token = CodegenAccess.nextToken(iter);
                 CodegenAccess.unreadByte(iter);
                 if (token == '"') {
-                    return (float)Double.longBitsToDouble(Base64.decodeLongBits(iter));
+                    return Float.intBitsToFloat(Base64.decodeIntBits(iter));
                 }else {
-                    return (float)iter.readDouble();
+                    return iter.readFloat();
                 }
             }
         });

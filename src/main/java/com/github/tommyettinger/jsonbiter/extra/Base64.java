@@ -191,6 +191,34 @@ abstract class Base64 {
         return bits;
     }
 
+    static void encodeIntBits(int bits, JsonStream stream) throws IOException {
+        int i = bits;
+        byte b1 = BA[(i >>> 18) & 0x3f];
+        byte b2 = BA[(i >>> 12) & 0x3f];
+        byte b3 = BA[(i >>> 6) & 0x3f];
+        byte b4 = BA[i & 0x3f];
+        stream.write((byte)'"', b1, b2, b3, b4);
+        bits = (bits >>> 24) << 4;
+        i = bits;
+        b1 = BA[(i >>> 6) & 0x3f];
+        b2 = BA[i & 0x3f];
+        stream.write(b1, b2, (byte)'"');
+    }
+
+    static int decodeIntBits(JsonIterator iter) throws IOException {
+        Slice slice = iter.readStringAsSlice();
+        if (slice.len() != 6) {
+            throw iter.reportError("decodeIntBits", "must be 6 bytes for int bits encoded float");
+        }
+        byte[] encoded = slice.data();
+        int sIx = slice.head();
+        int i = IA[encoded[sIx++]] << 18 | IA[encoded[sIx++]] << 12 | IA[encoded[sIx++]] << 6 | IA[encoded[sIx++]];
+        int bits = i;
+        i =  IA[encoded[sIx++]] << 6 | IA[encoded[sIx]];
+        bits = i << 20 | bits;
+        return bits;
+    }
+
     static int findEnd(final byte[] sArr, final int start) {
         for (int i = start; i < sArr.length; i++)
             if (IA[sArr[i] & 0xff] < 0)

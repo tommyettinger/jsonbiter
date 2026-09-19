@@ -8,5 +8,5 @@
 * Fix streaming code without dynamic mode being needed and without any class rewriting at runtime
 * Replace String.format() usage with String concatenation, for possible GWT support
 * Make extra/JdkDatetimeSupport write Dates as long values to avoid java.text (GWT support)
-* Add jsonbiter.gwt.xml file, also to try to support GWT
+* ~~Add jsonbiter.gwt.xml file, also to try to support GWT~~ Reflection usage makes GWT non-viable.
 * Changed package from com.jsoniter to com.github.tommyettinger.jsonbiter , so both libraries can be tested at once

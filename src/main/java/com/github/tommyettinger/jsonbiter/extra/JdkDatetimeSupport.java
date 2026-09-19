@@ -9,6 +9,8 @@ import com.github.tommyettinger.jsonbiter.spi.Encoder;
 import com.github.tommyettinger.jsonbiter.spi.JsoniterSpi;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -16,28 +18,38 @@ import java.util.Date;
  */
 public class JdkDatetimeSupport {
 
-    private static boolean enabled = false;
+    private static String pattern;
+    private final static ThreadLocal<SimpleDateFormat> sdf = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat(pattern);
+        }
+    };
 
     public static synchronized void enable(String pattern) {
-        if (JdkDatetimeSupport.enabled) {
+        if (JdkDatetimeSupport.pattern != null) {
             throw new JsonException("JdkDatetimeSupport.enable can only be called once");
         }
-        enabled = true;
+        JdkDatetimeSupport.pattern = pattern;
         JsoniterSpi.registerTypeEncoder(Date.class, new Encoder.ReflectionEncoder() {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {
-                stream.writeVal(((Date)obj).getTime());
+                stream.writeVal(sdf.get().format(obj));
             }
 
             @Override
             public Any wrap(Object obj) {
-                return Any.wrap(((Date)obj).getTime());
+                return Any.wrap(sdf.get().format(obj));
             }
         });
         JsoniterSpi.registerTypeDecoder(Date.class, new Decoder() {
             @Override
             public Object decode(JsonIterator iter) throws IOException {
-                return new Date(iter.readLong());
+                try {
+                    return sdf.get().parse(iter.readString());
+                } catch (ParseException e) {
+                    throw new JsonException(e);
+                }
             }
         });
     }

@@ -10,7 +10,7 @@ class CodegenImplObject {
         CodegenResult ctx = new CodegenResult();
         ClassDescriptor desc = ClassDescriptor.getEncodingClassDescriptor(classInfo, false);
         List<EncodeTo> encodeTos = desc.encodeTos();
-        ctx.append("public static void encode_(" + classInfo.clazz.getCanonicalName() + " obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        ctx.append("public static void encode_(" + classInfo.clazz.getCanonicalName() + " obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         if (hasFieldOutput(desc)) {
             int notFirst = 0;
             if (noIndention) {
@@ -109,7 +109,7 @@ class CodegenImplObject {
         if (encoder == null) {
             CodegenImplNative.genWriteOp(ctx, valueAccessor, binding.valueType, nullable, true);
         } else {
-            ctx.append("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeVal(\"" + fieldCacheKey + "\", " + valueAccessor + ", stream);");
+            ctx.append("com.github.tommyettinger.jsonbiter.output.CodegenAccess.writeVal(\"" + fieldCacheKey + "\", " + valueAccessor + ", stream);");
         }
         if (nullable || omitZero) {
             ctx.append("}");

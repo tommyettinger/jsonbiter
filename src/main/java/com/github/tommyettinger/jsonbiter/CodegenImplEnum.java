@@ -8,7 +8,7 @@ class CodegenImplEnum {
     public static String genEnum(ClassInfo classInfo) {
         StringBuilder lines = new StringBuilder();
         append(lines, "if (iter.readNull()) { return null; }");
-        append(lines, "spi.com.github.tommyettinger.jsonbiter.Slice field = com.github.tommyettinger.jsonbiter.CodegenAccess.readSlice(iter);");
+        append(lines, "com.github.tommyettinger.jsonbiter.spi.Slice field = com.github.tommyettinger.jsonbiter.CodegenAccess.readSlice(iter);");
         append(lines, "switch (field.len()) {");
         append(lines, renderTriTree(buildTriTree(Arrays.asList(classInfo.clazz.getEnumConstants()))));
         append(lines, "}"); // end of switch

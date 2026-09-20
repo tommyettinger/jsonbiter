@@ -169,9 +169,9 @@
                     <reuseForks>false</reuseForks>
                     <forkCount>4</forkCount>
                     <includes>
-                        <include>suite.com.github.tommyettinger.jsonbiter.StreamingTests</include>
-                        <include>suite.com.github.tommyettinger.jsonbiter.NonStreamingTests</include>
-                        <include>suite.com.github.tommyettinger.jsonbiter.ExtraTests</include>
+                        <include>com.github.tommyettinger.jsonbiter.suite.StreamingTests</include>
+                        <include>com.github.tommyettinger.jsonbiter.suite.NonStreamingTests</include>
+                        <include>com.github.tommyettinger.jsonbiter.suite.ExtraTests</include>
                     </includes>
                 </configuration>
             </plugin>

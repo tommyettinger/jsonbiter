@@ -72,7 +72,7 @@ class CodegenResult {
     public String generateWrapperCode(Class clazz) {
         flushBuffer();
         StringBuilder lines = new StringBuilder();
-        append(lines, "public void encode(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        append(lines, "public void encode(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         append(lines, "if (obj == null) { stream.writeNull(); return; }");
         if (prelude != null) {
             append(lines, CodegenResult.bufferToWriteOp(prelude));

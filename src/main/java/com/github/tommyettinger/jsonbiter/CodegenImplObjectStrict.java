@@ -83,7 +83,7 @@ class CodegenImplObjectStrict {
         if (desc.onExtraProperties != null || !desc.keyValueTypeWrappers.isEmpty()) {
             append(lines, "java.util.Map extra = null;");
         }
-        append(lines, "spi.com.github.tommyettinger.jsonbiter.Slice field = com.github.tommyettinger.jsonbiter.CodegenAccess.readObjectFieldAsSlice(iter);");
+        append(lines, "com.github.tommyettinger.jsonbiter.spi.Slice field = com.github.tommyettinger.jsonbiter.CodegenAccess.readObjectFieldAsSlice(iter);");
         append(lines, "boolean once = true;");
         append(lines, "while (once) {");
         append(lines, "once = false;");
@@ -153,7 +153,7 @@ class CodegenImplObjectStrict {
         for (Method wrapper : desc.keyValueTypeWrappers) {
             append(lines, "java.util.Map.Entry entry = (java.util.Map.Entry)extraIter.next();");
             append(lines, "String key = entry.getKey().toString();");
-            append(lines, "any.com.github.tommyettinger.jsonbiter.Any value = (any.com.github.tommyettinger.jsonbiter.Any)entry.getValue();");
+            append(lines, "com.github.tommyettinger.jsonbiter.any.Any value = (com.github.tommyettinger.jsonbiter.any.Any)entry.getValue();");
             append(lines, "obj." + wrapper.getName() + "(key, value.object());");
         }
         append(lines, "}");
@@ -240,7 +240,7 @@ class CodegenImplObjectStrict {
             }
         }
         if (desc.onMissingProperties == null || !desc.ctor.parameters.isEmpty()) {
-            append(lines, "throw new spi.com.github.tommyettinger.jsonbiter.JsonException(\"missing required properties: \" + missingFields);");
+            append(lines, "throw new com.github.tommyettinger.jsonbiter.spi.JsonException(\"missing required properties: \" + missingFields);");
         } else {
             if (desc.onMissingProperties.field != null) {
                 append(lines, "obj." + desc.onMissingProperties.field.getName() + " = missingFields;");
@@ -252,7 +252,7 @@ class CodegenImplObjectStrict {
 
     private static void appendOnUnknownField(StringBuilder lines, ClassDescriptor desc) {
         if (desc.asExtraForUnknownProperties && desc.onExtraProperties == null) {
-            append(lines, "throw new spi.com.github.tommyettinger.jsonbiter.JsonException('extra property: ' + field.toString());".replace('\'', '"'));
+            append(lines, "throw new com.github.tommyettinger.jsonbiter.spi.JsonException('extra property: ' + field.toString());".replace('\'', '"'));
         } else {
             if (desc.asExtraForUnknownProperties || !desc.keyValueTypeWrappers.isEmpty()) {
                 append(lines, "if (extra == null) { extra = new java.util.HashMap(); }");
@@ -314,7 +314,7 @@ class CodegenImplObjectStrict {
                 append(lines, ") {");
                 Binding field = (Binding) entry.getValue();
                 if (field.asExtraWhenPresent) {
-                    append(lines, "throw new spi.com.github.tommyettinger.jsonbiter.JsonException(\"extra property: "
+                    append(lines, "throw new com.github.tommyettinger.jsonbiter.spi.JsonException(\"extra property: "
                             +field.name+"\");");
                 } else if (field.shouldSkip) {
                     append(lines, "iter.skip();");
@@ -372,7 +372,7 @@ class CodegenImplObjectStrict {
             code.append("(existingObj == null ? ");
         }
         if (ctor.objectFactory != null) {
-            code.append("(").append(clazz.getCanonicalName()).append(")spi.com.github.tommyettinger.jsonbiter.JsoniterSpi.create(")
+            code.append("(").append(clazz.getCanonicalName()).append(")com.github.tommyettinger.jsonbiter.spi.JsoniterSpi.create(")
                     .append(clazz.getCanonicalName()).append(".class)");
         } else {
             if (ctor.staticMethodName == null) {

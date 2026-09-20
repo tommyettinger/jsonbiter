@@ -277,7 +277,7 @@ class CodegenImplNative {
         if (JsoniterSpi.getEncoder(cacheKey) == null) {
             if (noIndention && !isNullable && String.class == valueType) {
                 ctx.buffer('"');
-                ctx.append("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeStringWithoutQuote((java.lang.String)" + code + ", stream);");
+                ctx.append("com.github.tommyettinger.jsonbiter.output.CodegenAccess.writeStringWithoutQuote((java.lang.String)" + code + ", stream);");
                 ctx.buffer('"');
                 return;
             }
@@ -308,7 +308,7 @@ class CodegenImplNative {
                 ctx.buffer(generatedSource.epilogue);
             }
         } else {
-            ctx.append("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeVal(\"" + cacheKey + "\", (" + getTypeName(valueType) + ")" + code + ", stream);");
+            ctx.append("com.github.tommyettinger.jsonbiter.output.CodegenAccess.writeVal(\"" + cacheKey + "\", (" + getTypeName(valueType) + ")" + code + ", stream);");
         }
     }
 
@@ -330,9 +330,9 @@ class CodegenImplNative {
         boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
         CodegenResult ctx = new CodegenResult();
         // this was a malformed format call, should it be this or...
-        ctx.append("public static void encode_(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         // should it be this?
-//        ctx.append("public static void encode_("+clazz.getCanonicalName()+" obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+//        ctx.append("public static void encode_("+clazz.getCanonicalName()+" obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("if (obj == null) { stream.writeNull(); return; }");
         if (noIndention) {
             ctx.buffer('"');

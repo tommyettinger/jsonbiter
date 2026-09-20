@@ -48,7 +48,7 @@ class CodegenImplArray {
             isCollectionValueNullable = false;
         }
         CodegenResult ctx = new CodegenResult();
-        ctx.append("public static void encode_(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append(compType.getCanonicalName() + "[] arr = (" + compType.getCanonicalName() + "[])obj;");
         if (noIndention) {
             ctx.append("if (arr.length == 0) { return; }");
@@ -97,7 +97,7 @@ class CodegenImplArray {
             isCollectionValueNullable = false;
         }
         CodegenResult ctx = new CodegenResult();
-        ctx.append("public static void encode_(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("java.util.List list = (java.util.List)obj;");
         ctx.append("int size = list.size();");
         if (noIndention) {
@@ -146,7 +146,7 @@ class CodegenImplArray {
             isCollectionValueNullable = false;
         }
         CodegenResult ctx = new CodegenResult();
-        ctx.append("public static void encode_(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("java.util.Iterator iter = ((java.util.Collection)obj).iterator();");
         if (noIndention) {
             ctx.append("if (!iter.hasNext()) { return; }");

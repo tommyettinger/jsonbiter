@@ -196,7 +196,7 @@ class Codegen {
         String className = cacheKey.substring(cacheKey.lastIndexOf('.') + 1);
         String packageName = cacheKey.substring(0, cacheKey.lastIndexOf('.'));
         writer.write("package " + packageName + ";\n");
-        writer.write("public class " + className + " implements spi.com.github.tommyettinger.jsonbiter.Decoder {\n");
+        writer.write("public class " + className + " implements com.github.tommyettinger.jsonbiter.spi.Decoder {\n");
         writer.write(source);
         writer.write("public java.lang.Object decode(com.github.tommyettinger.jsonbiter.JsonIterator iter) throws java.io.IOException {\n");
         writer.write("return decode_(iter);\n");

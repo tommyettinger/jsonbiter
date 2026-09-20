@@ -20,7 +20,7 @@ class CodegenImplMap {
             valueType = typeArgs[1];
         }
         CodegenResult ctx = new CodegenResult();
-        ctx.append("public static void encode_(java.lang.Object obj, output.com.github.tommyettinger.jsonbiter.JsonStream stream) throws java.io.IOException {");
+        ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("if (obj == null) { stream.writeNull(); return; }");
         ctx.append("java.util.Map map = (java.util.Map)obj;");
         ctx.append("java.util.Iterator iter = map.entrySet().iterator();");
@@ -81,7 +81,7 @@ class CodegenImplMap {
             ctx.append("stream.write('\"');");
         } else {
             String mapCacheKey = JsoniterSpi.getMapKeyEncoderCacheKey(keyType);
-            ctx.append("output.com.github.tommyettinger.jsonbiter.CodegenAccess.writeMapKey(\"" + mapCacheKey + "\", entry.getKey(), stream);");
+            ctx.append("com.github.tommyettinger.jsonbiter.output.CodegenAccess.writeMapKey(\"" + mapCacheKey + "\", entry.getKey(), stream);");
         }
         if (noIndention) {
             ctx.append("stream.write(':');");

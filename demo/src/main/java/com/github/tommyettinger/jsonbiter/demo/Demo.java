@@ -1,14 +1,12 @@
-package com.jsoniter.demo;
+package com.github.tommyettinger.jsonbiter.demo;
 
-import com.jsoniter.JsonIterator;
-import com.jsoniter.any.Any;
-import com.jsoniter.output.EncodingMode;
-import com.jsoniter.output.JsonStream;
-import com.jsoniter.spi.DecodingMode;
+import com.github.tommyettinger.jsonbiter.JsonIterator;
+import com.github.tommyettinger.jsonbiter.any.Any;
+import com.github.tommyettinger.jsonbiter.output.JsonStream;
 
 public class Demo {
     static {
-        // ensure the jsoniter is properly setup
+        // ensure that JsonBiter is properly set up
         new DemoCodegenConfig().setup();
     }
 

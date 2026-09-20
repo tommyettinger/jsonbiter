@@ -1,14 +1,14 @@
-package com.jsoniter.demo;
+package com.github.tommyettinger.jsonbiter.demo;
 
-import com.jsoniter.JsonIterator;
-import com.jsoniter.any.Any;
-import com.jsoniter.output.EncodingMode;
-import com.jsoniter.output.JsonStream;
-import com.jsoniter.spi.Decoder;
-import com.jsoniter.spi.DecodingMode;
-import com.jsoniter.spi.JsoniterSpi;
-import com.jsoniter.spi.TypeLiteral;
-import com.jsoniter.static_codegen.StaticCodegenConfig;
+import com.github.tommyettinger.jsonbiter.JsonIterator;
+import com.github.tommyettinger.jsonbiter.any.Any;
+import com.github.tommyettinger.jsonbiter.output.EncodingMode;
+import com.github.tommyettinger.jsonbiter.output.JsonStream;
+import com.github.tommyettinger.jsonbiter.spi.Decoder;
+import com.github.tommyettinger.jsonbiter.spi.DecodingMode;
+import com.github.tommyettinger.jsonbiter.spi.JsoniterSpi;
+import com.github.tommyettinger.jsonbiter.spi.TypeLiteral;
+import com.github.tommyettinger.jsonbiter.static_codegen.StaticCodegenConfig;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +19,7 @@ public class DemoCodegenConfig implements StaticCodegenConfig {
     @Override
     public void setup() {
         // register custom decoder or extensions before codegen
-        // so that we doing codegen, we know in which case, we need to callback
+        // so that we can do codegen, we know in which case, we need to callback
         Any.registerEncoders();
         JsonIterator.setMode(DecodingMode.STATIC_MODE);
         JsonStream.setMode(EncodingMode.STATIC_MODE);

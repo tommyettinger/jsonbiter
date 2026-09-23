@@ -34,7 +34,7 @@ class CodegenImplArray {
     }
 
     public static CodegenResult genArray(String cacheKey, ClassInfo classInfo) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         Class clazz = classInfo.clazz;
         Class compType = clazz.getComponentType();
         if (compType.isArray()) {
@@ -50,12 +50,12 @@ class CodegenImplArray {
         CodegenResult ctx = new CodegenResult();
         ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append(compType.getCanonicalName() + "[] arr = (" + compType.getCanonicalName() + "[])obj;");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("if (arr.length == 0) { return; }");
             ctx.buffer('[');
         } else {
             ctx.append("if (arr.length == 0) { stream.write((byte)'[', (byte)']'); return; }");
-            ctx.append("stream.writeArrayStart(); stream.writeIndention();");
+            ctx.append("stream.writeArrayStart(); stream.writeIndentation();");
         }
         ctx.append("int i = 0;");
         ctx.append(compType.getCanonicalName() + " e = arr[i++];");
@@ -67,7 +67,7 @@ class CodegenImplArray {
             CodegenImplNative.genWriteOp(ctx, "e", compType, false);
         }
         ctx.append("while (i < arr.length) {");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("stream.write(',');");
         } else {
             ctx.append("stream.writeMore();");
@@ -81,7 +81,7 @@ class CodegenImplArray {
             CodegenImplNative.genWriteOp(ctx, "e", compType, false);
         }
         ctx.append("}"); // while
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer(']');
         } else {
             ctx.append("stream.writeArrayEnd();");
@@ -91,7 +91,7 @@ class CodegenImplArray {
     }
 
     private static CodegenResult genList(String cacheKey, Class clazz, Type compType) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         boolean isCollectionValueNullable = true;
         if (cacheKey.endsWith("__value_not_nullable")) {
             isCollectionValueNullable = false;
@@ -100,12 +100,12 @@ class CodegenImplArray {
         ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("java.util.List list = (java.util.List)obj;");
         ctx.append("int size = list.size();");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("if (size == 0) { return; }");
             ctx.buffer('[');
         } else {
             ctx.append("if (size == 0) { stream.write((byte)'[', (byte)']'); return; }");
-            ctx.append("stream.writeArrayStart(); stream.writeIndention();");
+            ctx.append("stream.writeArrayStart(); stream.writeIndentation();");
         }
         ctx.append("java.lang.Object e = list.get(0);");
         if (isCollectionValueNullable) {
@@ -116,7 +116,7 @@ class CodegenImplArray {
             CodegenImplNative.genWriteOp(ctx, "e", compType, false);
         }
         ctx.append("for (int i = 1; i < size; i++) {");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("stream.write(',');");
         } else {
             ctx.append("stream.writeMore();");
@@ -130,7 +130,7 @@ class CodegenImplArray {
             CodegenImplNative.genWriteOp(ctx, "e", compType, false);
         }
         ctx.append("}"); // for
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer(']');
         } else {
             ctx.append("stream.writeArrayEnd();");
@@ -140,7 +140,7 @@ class CodegenImplArray {
     }
 
     private static CodegenResult genCollection(String cacheKey, Class clazz, Type compType) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         boolean isCollectionValueNullable = true;
         if (cacheKey.endsWith("__value_not_nullable")) {
             isCollectionValueNullable = false;
@@ -148,12 +148,12 @@ class CodegenImplArray {
         CodegenResult ctx = new CodegenResult();
         ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("java.util.Iterator iter = ((java.util.Collection)obj).iterator();");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("if (!iter.hasNext()) { return; }");
             ctx.buffer('[');
         } else {
             ctx.append("if (!iter.hasNext()) { stream.write((byte)'[', (byte)']'); return; }");
-            ctx.append("stream.writeArrayStart(); stream.writeIndention();");
+            ctx.append("stream.writeArrayStart(); stream.writeIndentation();");
         }
         ctx.append("java.lang.Object e = iter.next();");
         if (isCollectionValueNullable) {
@@ -164,7 +164,7 @@ class CodegenImplArray {
             CodegenImplNative.genWriteOp(ctx, "e", compType, false);
         }
         ctx.append("while (iter.hasNext()) {");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("stream.write(',');");
         } else {
             ctx.append("stream.writeMore();");
@@ -178,7 +178,7 @@ class CodegenImplArray {
             CodegenImplNative.genWriteOp(ctx, "e", compType, false);
         }
         ctx.append("}"); // while
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer(']');
         } else {
             ctx.append("stream.writeArrayEnd();");

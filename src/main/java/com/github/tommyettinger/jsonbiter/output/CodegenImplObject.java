@@ -6,14 +6,14 @@ import java.util.*;
 
 class CodegenImplObject {
     public static CodegenResult genObject(ClassInfo classInfo) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         CodegenResult ctx = new CodegenResult();
         ClassDescriptor desc = ClassDescriptor.getEncodingClassDescriptor(classInfo, false);
         List<EncodeTo> encodeTos = desc.encodeTos();
         ctx.append("public static void encode_(" + classInfo.clazz.getCanonicalName() + " obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         if (hasFieldOutput(desc)) {
             int notFirst = 0;
-            if (noIndention) {
+            if (noIndentation) {
                 ctx.buffer('{');
             } else {
                 ctx.append("stream.writeObjectStart();");
@@ -38,7 +38,7 @@ class CodegenImplObject {
                     ctx.append("obj." + unwrapper.method.getName() + "(stream);");
                 }
             }
-            if (noIndention) {
+            if (noIndentation) {
                 ctx.buffer('}');
             } else {
                 if (notFirst == 1) { // definitely not first
@@ -65,7 +65,7 @@ class CodegenImplObject {
     }
 
     private static int genField(CodegenResult ctx, Binding binding, String toName, int notFirst) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         String fieldCacheKey = binding.encoderCacheKey();
         Encoder encoder = JsoniterSpi.getEncoder(fieldCacheKey);
         Class valueClazz;
@@ -87,14 +87,14 @@ class CodegenImplObject {
 
             ctx.append("if (!(" + binding.defaultValueToOmit.prefix() + valueAccessor + binding.defaultValueToOmit.suffix() + ")) {");
             notFirst = appendComma(ctx, notFirst);
-            if (noIndention) {
+            if (noIndentation) {
                 ctx.append(CodegenResult.bufferToWriteOp("\"" + toName + "\":"));
             } else {
                 ctx.append("stream.writeObjectField(\"" + toName + "\");");
             }
         } else {
             notFirst = appendComma(ctx, notFirst);
-            if (noIndention) {
+            if (noIndentation) {
                 ctx.buffer('"');
                 ctx.buffer(toName);
                 ctx.buffer('"');
@@ -118,23 +118,23 @@ class CodegenImplObject {
     }
 
     private static int appendComma(CodegenResult ctx, int notFirst) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         if (notFirst == 1) { // definitely not first
-            if (noIndention) {
+            if (noIndentation) {
                 ctx.buffer(',');
             } else {
                 ctx.append("stream.writeMore();");
             }
         } else if (notFirst == 2) { // maybe not first, previous field is omitNull
-            if (noIndention) {
+            if (noIndentation) {
                 ctx.append("if (notFirst) { stream.write(','); } else { notFirst = true; }");
             } else {
-                ctx.append("if (notFirst) { stream.writeMore(); } else { stream.writeIndention(); notFirst = true; }");
+                ctx.append("if (notFirst) { stream.writeMore(); } else { stream.writeIndentation(); notFirst = true; }");
             }
         } else { // this is the first, do not write comma
             notFirst = 1;
-            if (!noIndention) {
-                ctx.append("stream.writeIndention();");
+            if (!noIndentation) {
+                ctx.append("stream.writeIndentation();");
             }
         }
         return notFirst;

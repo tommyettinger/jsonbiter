@@ -272,10 +272,10 @@ class CodegenImplNative {
     }
 
     public static void genWriteOp(CodegenResult ctx, String code, Type valueType, boolean isNullable, boolean isCollectionValueNullable) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         String cacheKey = TypeLiteral.create(valueType).getEncoderCacheKey();
         if (JsoniterSpi.getEncoder(cacheKey) == null) {
-            if (noIndention && !isNullable && String.class == valueType) {
+            if (noIndentation && !isNullable && String.class == valueType) {
                 ctx.buffer('"');
                 ctx.append("com.github.tommyettinger.jsonbiter.output.CodegenAccess.writeStringWithoutQuote((java.lang.String)" + code + ", stream);");
                 ctx.buffer('"');
@@ -327,20 +327,20 @@ class CodegenImplNative {
         }
     }
     public static CodegenResult genEnum(Class clazz) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         CodegenResult ctx = new CodegenResult();
         // this was a malformed format call, should it be this or...
         ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         // should it be this?
 //        ctx.append("public static void encode_("+clazz.getCanonicalName()+" obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");
         ctx.append("if (obj == null) { stream.writeNull(); return; }");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer('"');
         } else {
             ctx.append("stream.write('\"');");
         }
         ctx.append("stream.writeRaw(obj.toString());");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer('"');
         } else {
             ctx.append("stream.write('\"');");

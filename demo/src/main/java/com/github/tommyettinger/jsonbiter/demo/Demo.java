@@ -14,7 +14,7 @@ public class Demo {
     }
 
     public static void main(String[] args) {
-        Config cfg = new Config.Builder().omitDefaultValue(true).escapeUnicode(false).indentionStep(2)
+        Config cfg = new Config.Builder().omitDefaultValue(true).escapeUnicode(false).indentationStep(2)
                 .encodingMode(EncodingMode.STATIC_MODE).decodingMode(DecodingMode.STATIC_MODE).build();
         User user = JsonIterator.deserialize(cfg, "{\"firstName\": \"tao\", \"lastName\": \"wen\", \"score\": \"1024\"}", User.class);
         System.out.println(user.firstName);

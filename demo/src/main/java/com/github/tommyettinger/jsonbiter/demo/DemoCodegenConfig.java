@@ -20,7 +20,7 @@ public class DemoCodegenConfig implements StaticCodegenConfig {
         Any.registerEncoders();
         Config newConfig = JsoniterSpi.getDefaultConfig().copyBuilder()
                 .decodingMode(DecodingMode.STATIC_MODE).encodingMode(EncodingMode.STATIC_MODE)
-                .omitDefaultValue(true).indentionStep(2).escapeUnicode(false).build();
+                .omitDefaultValue(true).indentationStep(2).escapeUnicode(false).build();
         JsoniterSpi.setDefaultConfig(newConfig);
         JsoniterSpi.setCurrentConfig(newConfig);
 

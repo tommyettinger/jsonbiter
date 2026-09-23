@@ -514,7 +514,7 @@ public class JsonStream extends OutputStream {
 
     }
 
-    public static void setIndentionStep(int indentationStep) {
+    public static void setIndentationStep(int indentationStep) {
         Config newConfig = JsoniterSpi.getDefaultConfig().copyBuilder().indentationStep(indentationStep).build();
         JsoniterSpi.setDefaultConfig(newConfig);
         JsoniterSpi.setCurrentConfig(newConfig);

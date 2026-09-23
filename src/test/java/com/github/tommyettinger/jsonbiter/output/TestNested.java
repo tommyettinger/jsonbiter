@@ -56,7 +56,7 @@ public class TestNested extends TestCase {
         if (JsoniterSpi.getCurrentConfig().encodingMode() != EncodingMode.REFLECTION_MODE) {
             return;
         }
-        JsonStream.setIndentionStep(2);
+        JsonStream.setIndentationStep(2);
         try {
             TestObject2 obj = new TestObject2();
             obj.objs = new TestObject1[1];
@@ -74,7 +74,7 @@ public class TestNested extends TestCase {
                     "  ]\n" +
                     "}".replace('\'', '"'), baos.toString());
         } finally {
-            JsonStream.setIndentionStep(0);
+            JsonStream.setIndentationStep(0);
         }
     }
 
@@ -82,7 +82,7 @@ public class TestNested extends TestCase {
         if (JsoniterSpi.getCurrentConfig().encodingMode() != EncodingMode.REFLECTION_MODE) {
             return;
         }
-        JsonStream.setIndentionStep(2);
+        JsonStream.setIndentationStep(2);
         try {
             final TestObject1 obj1 = new TestObject1();
             obj1.field1 = "1";
@@ -99,7 +99,7 @@ public class TestNested extends TestCase {
                     "  }\n" +
                     "}".replace('\'', '"'), baos.toString());
         } finally {
-            JsonStream.setIndentionStep(0);
+            JsonStream.setIndentationStep(0);
         }
     }
 

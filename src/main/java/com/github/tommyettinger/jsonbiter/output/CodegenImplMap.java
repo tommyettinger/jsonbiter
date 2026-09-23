@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 
 class CodegenImplMap {
     public static CodegenResult genMap(String cacheKey, ClassInfo classInfo) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
+        boolean noIndentation = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         Type[] typeArgs = classInfo.typeArgs;
         boolean isCollectionValueNullable = true;
         if (cacheKey.endsWith("__value_not_nullable")) {
@@ -24,18 +24,18 @@ class CodegenImplMap {
         ctx.append("if (obj == null) { stream.writeNull(); return; }");
         ctx.append("java.util.Map map = (java.util.Map)obj;");
         ctx.append("java.util.Iterator iter = map.entrySet().iterator();");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("if(!iter.hasNext()) { return; }");
         } else {
             ctx.append("if(!iter.hasNext()) { stream.write((byte)'{', (byte)'}'); return; }");
         }
         ctx.append("java.util.Map.Entry entry = (java.util.Map.Entry)iter.next();");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer('{');
         } else {
-            ctx.append("stream.writeObjectStart(); stream.writeIndention();");
+            ctx.append("stream.writeObjectStart(); stream.writeIndentation();");
         }
-        genWriteMapKey(ctx, keyType, noIndention);
+        genWriteMapKey(ctx, keyType, noIndentation);
         if (isCollectionValueNullable) {
             ctx.append("if (entry.getValue() == null) { stream.writeNull(); } else {");
             CodegenImplNative.genWriteOp(ctx, "entry.getValue()", valueType, true);
@@ -45,12 +45,12 @@ class CodegenImplMap {
         }
         ctx.append("while(iter.hasNext()) {");
         ctx.append("entry = (java.util.Map.Entry)iter.next();");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("stream.write(',');");
         } else {
             ctx.append("stream.writeMore();");
         }
-        genWriteMapKey(ctx, keyType, noIndention);
+        genWriteMapKey(ctx, keyType, noIndentation);
         if (isCollectionValueNullable) {
             ctx.append("if (entry.getValue() == null) { stream.writeNull(); } else {");
             CodegenImplNative.genWriteOp(ctx, "entry.getValue()", valueType, true);
@@ -59,7 +59,7 @@ class CodegenImplMap {
             CodegenImplNative.genWriteOp(ctx, "entry.getValue()", valueType, false);
         }
         ctx.append("}");
-        if (noIndention) {
+        if (noIndentation) {
             ctx.buffer('}');
         } else {
             ctx.append("stream.writeObjectEnd();");
@@ -68,7 +68,7 @@ class CodegenImplMap {
         return ctx;
     }
 
-    private static void genWriteMapKey(CodegenResult ctx, Type keyType, boolean noIndention) {
+    private static void genWriteMapKey(CodegenResult ctx, Type keyType, boolean noIndentation) {
         if (keyType == Object.class) {
             ctx.append("stream.writeObjectField(entry.getKey());");
             return;
@@ -83,7 +83,7 @@ class CodegenImplMap {
             String mapCacheKey = JsoniterSpi.getMapKeyEncoderCacheKey(keyType);
             ctx.append("com.github.tommyettinger.jsonbiter.output.CodegenAccess.writeMapKey(\"" + mapCacheKey + "\", entry.getKey(), stream);");
         }
-        if (noIndention) {
+        if (noIndentation) {
             ctx.append("stream.write(':');");
         } else {
             ctx.append("stream.write((byte)':', (byte)' ');");

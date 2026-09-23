@@ -4,10 +4,7 @@ import com.github.tommyettinger.jsonbiter.JsonIterator;
 import com.github.tommyettinger.jsonbiter.any.Any;
 import com.github.tommyettinger.jsonbiter.output.EncodingMode;
 import com.github.tommyettinger.jsonbiter.output.JsonStream;
-import com.github.tommyettinger.jsonbiter.spi.Decoder;
-import com.github.tommyettinger.jsonbiter.spi.DecodingMode;
-import com.github.tommyettinger.jsonbiter.spi.JsoniterSpi;
-import com.github.tommyettinger.jsonbiter.spi.TypeLiteral;
+import com.github.tommyettinger.jsonbiter.spi.*;
 import com.github.tommyettinger.jsonbiter.static_codegen.StaticCodegenConfig;
 
 import java.io.IOException;
@@ -21,9 +18,12 @@ public class DemoCodegenConfig implements StaticCodegenConfig {
         // register custom decoder or extensions before codegen
         // so that we can do codegen, we know in which case, we need to callback
         Any.registerEncoders();
-        JsonIterator.setMode(DecodingMode.STATIC_MODE);
-        JsonStream.setMode(EncodingMode.STATIC_MODE);
-        JsonStream.setIndentionStep(2);
+        Config newConfig = JsoniterSpi.getDefaultConfig().copyBuilder()
+                .decodingMode(DecodingMode.STATIC_MODE).encodingMode(EncodingMode.STATIC_MODE)
+                .omitDefaultValue(true).indentionStep(2).escapeUnicode(false).build();
+        JsoniterSpi.setDefaultConfig(newConfig);
+        JsoniterSpi.setCurrentConfig(newConfig);
+
         JsoniterSpi.registerPropertyDecoder(User.class, "score", new Decoder.IntDecoder() {
             @Override
             public int decodeInt(JsonIterator iter) throws IOException {

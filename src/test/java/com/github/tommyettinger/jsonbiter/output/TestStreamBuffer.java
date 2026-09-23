@@ -35,13 +35,13 @@ public class TestStreamBuffer extends TestCase {
         assertEquals(40, jsonStream.buffer().len());
     }
 
-    public void test_write_indention() throws IOException {
+    public void test_write_indentation() throws IOException {
         Config oldConfig = JsoniterSpi.getCurrentConfig();
         try {
-            JsoniterSpi.setCurrentConfig(new Config.Builder().indentionStep(32).build());
+            JsoniterSpi.setCurrentConfig(new Config.Builder().indentationStep(32).build());
             JsonStream jsonStream = new JsonStream(null, 32);
             jsonStream.writeArrayStart();
-            jsonStream.writeIndention();
+            jsonStream.writeIndentation();
             assertEquals(34, jsonStream.buffer().len());
         } finally {
             JsoniterSpi.setCurrentConfig(oldConfig);

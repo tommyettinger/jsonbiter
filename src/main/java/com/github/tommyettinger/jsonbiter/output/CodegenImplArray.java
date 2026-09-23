@@ -34,7 +34,7 @@ class CodegenImplArray {
     }
 
     public static CodegenResult genArray(String cacheKey, ClassInfo classInfo) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         Class clazz = classInfo.clazz;
         Class compType = clazz.getComponentType();
         if (compType.isArray()) {
@@ -91,7 +91,7 @@ class CodegenImplArray {
     }
 
     private static CodegenResult genList(String cacheKey, Class clazz, Type compType) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         boolean isCollectionValueNullable = true;
         if (cacheKey.endsWith("__value_not_nullable")) {
             isCollectionValueNullable = false;
@@ -140,7 +140,7 @@ class CodegenImplArray {
     }
 
     private static CodegenResult genCollection(String cacheKey, Class clazz, Type compType) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         boolean isCollectionValueNullable = true;
         if (cacheKey.endsWith("__value_not_nullable")) {
             isCollectionValueNullable = false;

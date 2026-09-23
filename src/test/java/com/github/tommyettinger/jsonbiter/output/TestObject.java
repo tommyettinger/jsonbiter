@@ -86,7 +86,7 @@ public class TestObject extends TestCase {
         assertEquals("{'field1':'HELLO'}".replace('\'', '"'), baos.toString());
         Config cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("{\n" +
                 "  \"field1\": \"HELLO\"\n" +
@@ -267,9 +267,9 @@ public class TestObject extends TestCase {
         public String field3;
     }
 
-    public void test_indention() {
+    public void test_indentation() {
         Config dynamicCfg = new Config.Builder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         TestObject14 obj = new TestObject14();
@@ -282,7 +282,7 @@ public class TestObject extends TestCase {
                 "  \"field3\": null\n" +
                 "}", output);
         Config reflectionCfg = new Config.Builder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         output = JsonStream.serialize(reflectionCfg, obj);
@@ -300,14 +300,14 @@ public class TestObject extends TestCase {
         public Integer i2;
     }
 
-    public void test_indention_with_empty_object() {
+    public void test_indentation_with_empty_object() {
         Config config = JsoniterSpi.getCurrentConfig().copyBuilder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(config, new TestObject15()));
         config = JsoniterSpi.getCurrentConfig().copyBuilder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(config, new TestObject15()));
@@ -320,7 +320,7 @@ public class TestObject extends TestCase {
 
     public void test_missing_notFirst() {
         Config cfg = JsoniterSpi.getCurrentConfig().copyBuilder()
-            .indentionStep(2)
+            .indentationStep(2)
             .encodingMode(EncodingMode.REFLECTION_MODE)
             .build();
         assertEquals("{\n" +

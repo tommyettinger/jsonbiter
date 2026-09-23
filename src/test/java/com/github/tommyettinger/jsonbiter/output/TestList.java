@@ -8,10 +8,10 @@ import java.util.Arrays;
 
 public class TestList extends TestCase {
 
-    public void test_indention() {
+    public void test_indentation() {
         Config cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[\n" +
                 "  1,\n" +
@@ -19,7 +19,7 @@ public class TestList extends TestCase {
                 "]", JsonStream.serialize(cfg, Arrays.asList(1, 2)));
         cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[\n" +
                 "  1,\n" +
@@ -27,15 +27,15 @@ public class TestList extends TestCase {
                 "]", JsonStream.serialize(cfg, Arrays.asList(1, 2)));
     }
 
-    public void test_indention_with_empty_array() {
+    public void test_indentation_with_empty_array() {
         Config cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new ArrayList<Integer>()));
         cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new ArrayList<Integer>()));
     }

@@ -114,10 +114,10 @@ public class TestArray extends TestCase {
         assertEquals("[]", JsonStream.serialize(Collections.emptySet()));
     }
 
-    public void test_indention() {
+    public void test_indentation() {
         Config cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[\n" +
                 "  1,\n" +
@@ -125,7 +125,7 @@ public class TestArray extends TestCase {
                 "]", JsonStream.serialize(cfg, new int[]{1, 2}));
         cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[\n" +
                 "  1,\n" +
@@ -133,15 +133,15 @@ public class TestArray extends TestCase {
                 "]", JsonStream.serialize(cfg, new int[]{1, 2}));
     }
 
-    public void test_indention_with_empty_array() {
+    public void test_indentation_with_empty_array() {
         Config cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new int[]{}));
         cfg = new Config.Builder()
                 .encodingMode(EncodingMode.REFLECTION_MODE)
-                .indentionStep(2)
+                .indentationStep(2)
                 .build();
         assertEquals("[]", JsonStream.serialize(cfg, new int[]{}));
     }

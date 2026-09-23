@@ -6,7 +6,7 @@ import java.util.*;
 
 class CodegenImplObject {
     public static CodegenResult genObject(ClassInfo classInfo) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         CodegenResult ctx = new CodegenResult();
         ClassDescriptor desc = ClassDescriptor.getEncodingClassDescriptor(classInfo, false);
         List<EncodeTo> encodeTos = desc.encodeTos();
@@ -65,7 +65,7 @@ class CodegenImplObject {
     }
 
     private static int genField(CodegenResult ctx, Binding binding, String toName, int notFirst) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         String fieldCacheKey = binding.encoderCacheKey();
         Encoder encoder = JsoniterSpi.getEncoder(fieldCacheKey);
         Class valueClazz;
@@ -118,7 +118,7 @@ class CodegenImplObject {
     }
 
     private static int appendComma(CodegenResult ctx, int notFirst) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         if (notFirst == 1) { // definitely not first
             if (noIndention) {
                 ctx.buffer(',');

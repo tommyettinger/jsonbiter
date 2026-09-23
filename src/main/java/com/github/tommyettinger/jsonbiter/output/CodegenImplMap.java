@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 
 class CodegenImplMap {
     public static CodegenResult genMap(String cacheKey, ClassInfo classInfo) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         Type[] typeArgs = classInfo.typeArgs;
         boolean isCollectionValueNullable = true;
         if (cacheKey.endsWith("__value_not_nullable")) {

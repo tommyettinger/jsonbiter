@@ -52,7 +52,7 @@ class ReflectionMapEncoder implements Encoder.ReflectionEncoder {
         if (notFirst) {
             stream.writeMore();
         } else {
-            stream.writeIndention();
+            stream.writeIndentation();
             notFirst = true;
         }
         stream.writeObjectField(entry.getKey(), mapKeyEncoder);

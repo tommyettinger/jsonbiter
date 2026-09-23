@@ -111,7 +111,7 @@ class ReflectionObjectEncoder implements Encoder.ReflectionEncoder {
             if (notFirst) {
                 stream.writeMore();
             } else {
-                stream.writeIndention();
+                stream.writeIndentation();
                 notFirst = true;
             }
             stream.writeObjectField(encodeTo.toName);

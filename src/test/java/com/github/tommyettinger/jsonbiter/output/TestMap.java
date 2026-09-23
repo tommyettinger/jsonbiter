@@ -94,12 +94,12 @@ public class TestMap extends TestCase {
         assertEquals("{\"0\":null}", output);
     }
 
-    public void skip_indention() {
+    public void skip_indentation() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("field1", "1");
         map.put("field2", "2");
         Config dynamicCfg = new Config.Builder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         String output = JsonStream.serialize(dynamicCfg, map);
@@ -108,7 +108,7 @@ public class TestMap extends TestCase {
                 "  \"field2\": \"2\"\n" +
                 "}", output);
         Config reflectionCfg = new Config.Builder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         output = JsonStream.serialize(reflectionCfg, map);
@@ -118,14 +118,14 @@ public class TestMap extends TestCase {
                 "}", output);
     }
 
-    public void test_indention_with_empty_map() {
+    public void test_indentation_with_empty_map() {
         Config config = JsoniterSpi.getCurrentConfig().copyBuilder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(config, new HashMap<String, String>()));
         config = JsoniterSpi.getCurrentConfig().copyBuilder()
-                .indentionStep(2)
+                .indentationStep(2)
                 .encodingMode(EncodingMode.REFLECTION_MODE)
                 .build();
         assertEquals("{}", JsonStream.serialize(config, new HashMap<String, String>()));

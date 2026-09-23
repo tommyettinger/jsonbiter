@@ -32,7 +32,7 @@ class ReflectionListEncoder implements Encoder.ReflectionEncoder {
             return;
         }
         stream.writeArrayStart();
-        stream.writeIndention();
+        stream.writeIndentation();
         stream.writeVal(compTypeLiteral, list.get(0));
         for (int i = 1; i < list.size(); i++) {
             stream.writeMore();

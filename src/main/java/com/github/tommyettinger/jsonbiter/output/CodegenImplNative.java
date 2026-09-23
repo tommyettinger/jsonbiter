@@ -272,7 +272,7 @@ class CodegenImplNative {
     }
 
     public static void genWriteOp(CodegenResult ctx, String code, Type valueType, boolean isNullable, boolean isCollectionValueNullable) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         String cacheKey = TypeLiteral.create(valueType).getEncoderCacheKey();
         if (JsoniterSpi.getEncoder(cacheKey) == null) {
             if (noIndention && !isNullable && String.class == valueType) {
@@ -327,7 +327,7 @@ class CodegenImplNative {
         }
     }
     public static CodegenResult genEnum(Class clazz) {
-        boolean noIndention = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        boolean noIndention = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
         CodegenResult ctx = new CodegenResult();
         // this was a malformed format call, should it be this or...
         ctx.append("public static void encode_(java.lang.Object obj, com.github.tommyettinger.jsonbiter.output.JsonStream stream) throws java.io.IOException {");

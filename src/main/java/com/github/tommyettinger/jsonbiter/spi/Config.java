@@ -82,8 +82,8 @@ public class Config extends EmptyExtension {
         return builder.copy();
     }
 
-    public int indentionStep() {
-        return builder.indentionStep;
+    public int indentationStep() {
+        return builder.indentationStep;
     }
 
     public boolean omitDefaultValue() {
@@ -102,7 +102,7 @@ public class Config extends EmptyExtension {
 
         private DecodingMode decodingMode;
         private EncodingMode encodingMode;
-        private int indentionStep;
+        private int indentationStep;
         private boolean escapeUnicode = true;
         private boolean omitDefaultValue = false;
 
@@ -131,8 +131,8 @@ public class Config extends EmptyExtension {
             return this;
         }
 
-        public Builder indentionStep(int indentionStep) {
-            this.indentionStep = indentionStep;
+        public Builder indentationStep(int indentationStep) {
+            this.indentationStep = indentationStep;
             return this;
         }
 
@@ -176,7 +176,7 @@ public class Config extends EmptyExtension {
 
             Builder builder = (Builder) o;
 
-            if (indentionStep != builder.indentionStep) return false;
+            if (indentationStep != builder.indentationStep) return false;
             if (escapeUnicode != builder.escapeUnicode) return false;
             if (decodingMode != builder.decodingMode) return false;
             if (omitDefaultValue != builder.omitDefaultValue) return false;
@@ -187,7 +187,7 @@ public class Config extends EmptyExtension {
         public int hashCode() {
             int result = decodingMode != null ? decodingMode.hashCode() : 0;
             result = 31 * result + (encodingMode != null ? encodingMode.hashCode() : 0);
-            result = 31 * result + indentionStep;
+            result = 31 * result + indentationStep;
             result = 31 * result + (escapeUnicode ? 1 : 0);
             result = 31 * result + (omitDefaultValue ? 1 : 0);
             return result;
@@ -197,7 +197,7 @@ public class Config extends EmptyExtension {
             Builder builder = new Builder();
             builder.encodingMode = encodingMode;
             builder.decodingMode = decodingMode;
-            builder.indentionStep = indentionStep;
+            builder.indentationStep = indentationStep;
             builder.escapeUnicode = escapeUnicode;
             builder.omitDefaultValue = omitDefaultValue;
             return builder;
@@ -208,7 +208,7 @@ public class Config extends EmptyExtension {
             return "Config{" +
                     "decodingMode=" + decodingMode +
                     ", encodingMode=" + encodingMode +
-                    ", indentionStep=" + indentionStep +
+                    ", indentationStep=" + indentationStep +
                     ", escapeUnicode=" + escapeUnicode +
                     ", omitDefaultValue=" + omitDefaultValue +
                     '}';

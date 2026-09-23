@@ -11,7 +11,7 @@ class CodegenResult {
     private StringBuilder buffered = new StringBuilder();
 
     public CodegenResult() {
-        supportBuffer = JsoniterSpi.getCurrentConfig().indentionStep() == 0;
+        supportBuffer = JsoniterSpi.getCurrentConfig().indentationStep() == 0;
     }
 
     public void append(String str) {
@@ -28,7 +28,7 @@ class CodegenResult {
         if (supportBuffer) {
             buffered.append(c);
         } else {
-            throw new UnsupportedOperationException("internal error: should not call buffer when indention step > 0");
+            throw new UnsupportedOperationException("internal error: should not call buffer when indentation step > 0");
         }
     }
 
@@ -39,7 +39,7 @@ class CodegenResult {
         if (supportBuffer) {
             buffered.append(s);
         } else {
-            throw new UnsupportedOperationException("internal error: should not call buffer when indention step > 0");
+            throw new UnsupportedOperationException("internal error: should not call buffer when indentation step > 0");
 
         }
     }

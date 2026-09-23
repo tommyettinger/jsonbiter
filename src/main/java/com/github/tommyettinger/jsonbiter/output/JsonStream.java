@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 public class JsonStream extends OutputStream {
 
     public Config configCache;
-    int indention = 0;
+    int indentation = 0;
     private OutputStream out;
     byte buf[];
     int count;
@@ -284,25 +284,25 @@ public class JsonStream extends OutputStream {
     }
 
     public final void writeArrayStart() throws IOException {
-        indention += currentConfig().indentionStep();
+        indentation += currentConfig().indentationStep();
         write('[');
     }
 
     public final void writeMore() throws IOException {
         write(',');
-        writeIndention();
+        writeIndentation();
     }
 
-    public void writeIndention() throws IOException {
-        writeIndention(0);
+    public void writeIndentation() throws IOException {
+        writeIndentation(0);
     }
 
-    private void writeIndention(int delta) throws IOException {
-        if (indention == 0) {
+    private void writeIndentation(int delta) throws IOException {
+        if (indentation == 0) {
             return;
         }
         write('\n');
-        int toWrite = indention - delta;
+        int toWrite = indentation - delta;
         ensure(toWrite);
         for (int i = 0; i < toWrite && count < buf.length; i++) {
             buf[count++] = ' ';
@@ -310,21 +310,21 @@ public class JsonStream extends OutputStream {
     }
 
     public final void writeArrayEnd() throws IOException {
-        int indentionStep = currentConfig().indentionStep();
-        writeIndention(indentionStep);
-        indention -= indentionStep;
+        int indentationStep = currentConfig().indentationStep();
+        writeIndentation(indentationStep);
+        indentation -= indentationStep;
         write(']');
     }
 
     public final void writeObjectStart() throws IOException {
-        int indentionStep = currentConfig().indentionStep();
-        indention += indentionStep;
+        int indentationStep = currentConfig().indentationStep();
+        indentation += indentationStep;
         write('{');
     }
 
     public final void writeObjectField(String field) throws IOException {
         writeVal(field);
-        if (indention > 0) {
+        if (indentation > 0) {
             write((byte) ':', (byte) ' ');
         } else {
             write(':');
@@ -338,7 +338,7 @@ public class JsonStream extends OutputStream {
 
     public final void writeObjectField(Object key, Encoder keyEncoder) throws IOException {
         keyEncoder.encode(key, this);
-        if (indention > 0) {
+        if (indentation > 0) {
             write((byte) ':', (byte) ' ');
         } else {
             write(':');
@@ -346,9 +346,9 @@ public class JsonStream extends OutputStream {
     }
 
     public final void writeObjectEnd() throws IOException {
-        int indentionStep = currentConfig().indentionStep();
-        writeIndention(indentionStep);
-        indention -= indentionStep;
+        int indentationStep = currentConfig().indentationStep();
+        writeIndentation(indentationStep);
+        indentation -= indentationStep;
         write('}');
     }
 
@@ -514,8 +514,8 @@ public class JsonStream extends OutputStream {
 
     }
 
-    public static void setIndentionStep(int indentionStep) {
-        Config newConfig = JsoniterSpi.getDefaultConfig().copyBuilder().indentionStep(indentionStep).build();
+    public static void setIndentionStep(int indentationStep) {
+        Config newConfig = JsoniterSpi.getDefaultConfig().copyBuilder().indentationStep(indentationStep).build();
         JsoniterSpi.setDefaultConfig(newConfig);
         JsoniterSpi.setCurrentConfig(newConfig);
     }

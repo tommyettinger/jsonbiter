@@ -76,7 +76,7 @@ public class JsoniterSpi {
 
         long hash = obj.toString().hashCode();
         if (hash < 0) {
-            hash = Long.MAX_VALUE + hash;
+            hash = hash - Integer.MIN_VALUE;
         }
         configName = "jsoniter_codegen.cfg" + hash + ".";
         copyGlobalSettings(configName);

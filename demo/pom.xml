@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.github.tommyettinger</groupId>
             <artifactId>jsonbiter</artifactId>
-            <version>743fb9b1cd</version>
+            <version>356e7babc5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -219,7 +219,7 @@ class CodegenImplObjectStrict {
             if (binding.field != null) {
                 if (binding.valueCanReuse) {
                     // reuse; then field set
-                    rendered = rendered.substring(0, start) + "com.jsoniter.CodegenAccess.setExistingObject(iter, obj." + binding.field.getName() + ");obj." + binding.field.getName() + "=" + op + rendered.substring(end);
+                    rendered = rendered.substring(0, start) + "com.github.tommyettinger.jsonbiter.CodegenAccess.setExistingObject(iter, obj." + binding.field.getName() + ");obj." + binding.field.getName() + "=" + op + rendered.substring(end);
                 } else {
                     // just field set
                     rendered = rendered.substring(0, start) + "obj." + binding.field.getName() + "=" + op + rendered.substring(end);

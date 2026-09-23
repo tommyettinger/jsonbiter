@@ -92,7 +92,7 @@
                             <arguments>
                                 <argument>-classpath</argument>
                                 <classpath/>
-                                <argument>com.jsoniter.static_codegen.StaticCodegen</argument>
+                                <argument>com.github.tommyettinger.jsonbiter.static_codegen.StaticCodegen</argument>
                                 <argument>com.github.tommyettinger.jsonbiter.demo.DemoCodegenConfig</argument>
                             </arguments>
                         </configuration>
